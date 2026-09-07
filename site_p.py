@@ -6,7 +6,10 @@ import requests
 import os
 from flask import Flask, render_template
 import threading
+from dotenv import load_dotenv
+load_dotenv()
 TOKEN = os.getenv("TOKEN_key")
+print(TOKEN)
 bot = Bot(TOKEN)
 name_list = []
 price_list = []
@@ -84,6 +87,6 @@ def run_bot():
     app1.run_polling()
 if __name__ == '__main__':
     threading.Thread(target=run_bot).start()
-    port = int(os.environ.get("PORT",8080))
+    port = int(os.environ.get("PORT",5000))
     app.run(host="0.0.0.0", port=port)
     app.run(debug=False)
