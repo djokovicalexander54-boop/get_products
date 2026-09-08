@@ -73,17 +73,19 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id , text="سلام. در این ربات میتوانید محصولات موبایل سایت دیجی کالا را مشاهده کنید")
     reply = InlineKeyboardMarkup([[InlineKeyboardButton(text="مشاهده محصولات", url="https://telegold.ir")]])
     await context.bot.send_message(chat_id=update.effective_chat.id , text="برای مشاهده محصولات، کلیک کنید", reply_markup=reply)
-async def start1(message, update: Update ,context:ContextTypes.DEFAULT_TYPE):
-    if 'send_text' in message.text:
+async def start1(update: Update ,context:ContextTypes.DEFAULT_TYPE):
+    if update.message and 'send_text' in update.message.text:
         id_name = update.effective_user.first_name
         await context.bot.send_message(chat_id=update.effective_chat.id , text=f"کاربر {id_name}، شما از سایت محصولات موبایل به اینجا هدایت شدید")
     else:
         await context.bot.send_message(chat_id=update.effective_chat.id , text="این ربات صرفا برای تست است")
 def run_bot():
+    import asyncio
+    asyncio.set_event_loop(asyncio.new_event_loop())
     app1 = Application.builder().token(TOKEN).build()
     app1.add_handler(CommandHandler("start",start))
     app1.add_handler(CommandHandler("start1",start1))
     app1.run_polling()
-threading.Thread(target=run_bot).start()
+threading.Thread(target=run_bot, daemon=True).start()
 port = int(os.environ.get("PORT",80))
 app.run(host="0.0.0.0", port=port, debug=False)
