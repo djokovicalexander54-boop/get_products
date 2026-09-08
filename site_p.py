@@ -80,12 +80,11 @@ async def start1(update: Update ,context:ContextTypes.DEFAULT_TYPE):
     else:
         await context.bot.send_message(chat_id=7737231906 , text="این ربات صرفا برای تست است")
 def run_bot():
-    import asyncio
-    asyncio.set_event_loop(asyncio.new_event_loop())
+    port = int(os.environ.get("PORT",80))
+    app.run(host="0.0.0.0", port=port, debug=False)
+if __name__=='__main__':
+    threading.Thread(target=run_bot, daemon=True).start()
     app1 = Application.builder().token(TOKEN).build()
     app1.add_handler(CommandHandler("start",start))
     app1.add_handler(CommandHandler("start1",start1))
     app1.run_polling()
-threading.Thread(target=run_bot, daemon=True).start()
-port = int(os.environ.get("PORT",80))
-app.run(host="0.0.0.0", port=port, debug=False)
