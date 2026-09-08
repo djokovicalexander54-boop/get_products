@@ -70,15 +70,15 @@ def home():
         image = image_list
     )
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id , text="سلام. در این ربات میتوانید محصولات موبایل سایت دیجی کالا را مشاهده کنید")
+    await context.bot.send_message(chat_id=7737231906 , text="سلام. در این ربات میتوانید محصولات موبایل سایت دیجی کالا را مشاهده کنید")
     reply = InlineKeyboardMarkup([[InlineKeyboardButton(text="مشاهده محصولات", url="https://telegold.ir")]])
-    await context.bot.send_message(chat_id=update.effective_chat.id , text="برای مشاهده محصولات، کلیک کنید", reply_markup=reply)
+    await context.bot.send_message(chat_id=7737231906 , text="برای مشاهده محصولات، کلیک کنید", reply_markup=reply)
 async def start1(update: Update ,context:ContextTypes.DEFAULT_TYPE):
     if update.message and 'send_text' in update.message.text:
         id_name = update.effective_user.first_name
-        await context.bot.send_message(chat_id=update.effective_chat.id , text=f"کاربر {id_name}، شما از سایت محصولات موبایل به اینجا هدایت شدید")
+        await context.bot.send_message(chat_id=7737231906 , text=f"کاربر {id_name}، شما از سایت محصولات موبایل به اینجا هدایت شدید")
     else:
-        await context.bot.send_message(chat_id=update.effective_chat.id , text="این ربات صرفا برای تست است")
+        await context.bot.send_message(chat_id=7737231906 , text="این ربات صرفا برای تست است")
 def run_bot():
     import asyncio
     asyncio.set_event_loop(asyncio.new_event_loop())
