@@ -84,8 +84,6 @@ def run_bot():
     app1.add_handler(CommandHandler("start",start))
     app1.add_handler(CommandHandler("start1",start1))
     app1.run_polling()
-if __name__ == '__main__':
-    threading.Thread(target=run_bot).start()
-    port = int(os.environ.get("PORT",5000))
-    app.run(host="0.0.0.0", port=port)
-    app.run(debug=False)
+threading.Thread(target=run_bot).start()
+port = int(os.environ.get("PORT",80))
+app.run(host="0.0.0.0", port=port, debug=False)
