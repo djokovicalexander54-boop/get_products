@@ -6,10 +6,7 @@ import requests
 import os
 from flask import Flask, render_template
 import threading
-from dotenv import load_dotenv
-load_dotenv()
-TOKEN = os.getenv("TOKEN_key")
-print(TOKEN)
+TOKEN = "8895390221:AAHimOc0oaR1rcKv1OpzVrVfv5PIaAwG9BQ"
 bot = Bot(TOKEN)
 name_list = []
 price_list = []
