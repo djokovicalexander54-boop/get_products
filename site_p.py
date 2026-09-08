@@ -69,20 +69,18 @@ def home():
         comment_site = comment_list,
         image = image_list
     )
-async def start1(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    reply = InlineKeyboardMarkup([[InlineKeyboardButton(text="برای مشاهده محصولات، کلیک کنید", url="https://telegold.ir")]])
-    await context.bot.send_message(chat_id=update.effective_chat.id , text="سلام. در این ربات میتوانید محصولات موبایل سایت دیجی کالا را مشاهده کنید", reply_markup=reply)
 async def start(update: Update ,context:ContextTypes.DEFAULT_TYPE):
     if update.message and 'send_text' in update.message.text:
         id_name = update.effective_user.first_name
         await context.bot.send_message(chat_id=update.effective_chat.id , text=f"کاربر {id_name}، شما از سایت محصولات موبایل به اینجا هدایت شدید")
     else:
-        await context.bot.send_message(chat_id=update.effective_chat.id , text="این ربات صرفا برای تست است")
+        reply = InlineKeyboardMarkup([[InlineKeyboardButton(text="برای مشاهده محصولات، کلیک کنید", url="https://telegold.ir")]])
+        await context.bot.send_message(chat_id=update.effective_chat.id , text="سلام. در این ربات میتوانید محصولات موبایل سایت دیجی کالا را مشاهده کنید", reply_markup=reply)
 def run_bot():
     port = int(os.environ.get("PORT",80))
     app.run(host="0.0.0.0", port=port, debug=False)
 if __name__=='__main__':
     threading.Thread(target=run_bot, daemon=True).start()
     app1 = Application.builder().token(TOKEN).build()
-    app1.add_handler(CommandHandler("start",start1))
+    app1.add_handler(CommandHandler("start",start))
     app1.run_polling()
