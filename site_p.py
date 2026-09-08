@@ -70,9 +70,11 @@ def home():
         image = image_list
     )
 async def start(update: Update ,context:ContextTypes.DEFAULT_TYPE):
-    if update.message and 'send_text' in update.message.text:
+    text = update.message.text
+    if 'send_text_' in text:
+        number = text.split("send_text_")[1]
         id_name = update.effective_user.first_name
-        await context.bot.send_message(chat_id=update.effective_chat.id , text=f"کاربر {id_name}، شما از سایت محصولات موبایل به اینجا هدایت شدید")
+        await context.bot.send_message(chat_id=update.effective_chat.id , text=f"کاربر {id_name}، شما محصول {number} را انتخاب کردید")
     else:
         reply = InlineKeyboardMarkup([[InlineKeyboardButton(text="برای مشاهده محصولات، کلیک کنید", url="https://telegold.ir")]])
         await context.bot.send_message(chat_id=update.effective_chat.id , text="سلام. در این ربات میتوانید محصولات موبایل سایت دیجی کالا را مشاهده کنید", reply_markup=reply)
