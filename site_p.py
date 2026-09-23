@@ -20,9 +20,10 @@ def bb():
             )
             print(responce.text, flush=True)
             break
-        except:
+        except Exception as e:
+            print(str(e), flush=True)
             time.sleep(2)
-            print(f"NO {m}")
+            print(f"NO {m}", flush=True)
             m+=1
 if __name__ == '__main__':
     threading.Thread(target=bb, daemon=True).start()
