@@ -14,6 +14,7 @@ from flask import Flask
 import threading
 import os
 from google import genai
+from openai import OpenAI
 from pypdf import PdfReader, PdfWriter
 TOKEN ="8818973935:AAE4Zr7QVS0FjrA09AmEcy-bT1FMqwh7nGg"
 bot = Bot(TOKEN)
@@ -53,7 +54,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     story = [] 
     title_list = []
     with open("title_text.txt", "w", encoding="utf-8") as file:
-        while u<=2:
+        while u<=0:
             if t==1:
                 play = {"source_view":"CATEGORY","pagination_data":{
                 "@type":"type.googleapis.com/post_list.PaginationData","last_post_date":"2026-09-22T17:54:48.708176Z","page":1,"layer_page":1,
@@ -163,23 +164,42 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(chat_id=update.effective_chat.id, text="در حال تلاش برای ارتباط گیری با مدل هوش مصنوعی...")
         MM = "pdf_divar.pdf"
         explain_user = "سلام. من کارگاه قطعه بندی مرغ (ران رستورانی سایز،فیله مرغ،سینه بدون استخوان، بال بازو،) دارم. لطفا اگهی های مربوط به استخدام نیرو متخصص رستوران مثل سر اشپز کمک اشپز و .. پیدا کن"
-        sentence = f"لطفا با توجه به این متن : {explain_user}, تمام آگهی های مربوط به این توضیحات را از این فایل PDF پیدا کن. سپس فقط و فقط شماره آگهی آنها رو که در فایل PDF وجود دارد، بصورت یک لیست بده. لطفا سعی کن شماره صفحه آگهی هایی رو پیدا کنی که مطابق با توضیحات یا شباهت زیادی با آن داشته باشند. بقیه آگهی ها رو درنظر نگیر.لطفا هیچ توضیح اضافه ای نده، فقط لیست شماره آگهی ها رو بفرست"
-        for ss in ["1.5","2.5","3.5","3.6"]:
+        sentence = f"لطفا با توجه به این متن : {explain_user}, تمام آگهی های مربوط به این توضیحات را از این متنی که فرستاده میشود پیدا کن. سپس فقط و فقط شماره آگهی آنها رو که در فایل وجود دارد، بصورت یک لیست بده. لطفا سعی کن شماره صفحه آگهی هایی رو پیدا کنی که مطابق با توضیحات یا شباهت زیادی با آن داشته باشند. بقیه آگهی ها رو درنظر نگیر.لطفا هیچ توضیح اضافه ای نده، فقط لیست شماره آگهی ها رو بفرست. متن آگهی ها به این شرح است : {text_long}"
+        # خواندن پی دی اف
+        READ = PdfReader(MM)
+        text_long = ""
+        for page in READ.pages:
+            text = page.extract_text()
+            if text:
+                text_long+= f"{text} \n"
+        try:
+            key_gemini = "AQ.Ab8RN6I-qLW5ZJCLq-sqm0fNLjAP6xo9fqMpD6QvT5RKuBxKyg"
+            gemini_ai = genai.Client(api_key=key_gemini)
+            #pdf_file_A = gemini_ai.files.upload(file=MM)
+            responce = gemini_ai.models.generate_content( 
+                model = f"gemini-3.5-flash", 
+                contents=[sentence]
+            )
+            await context.bot.send_message(chat_id=update.effective_chat.id, text=str(responce.text))
+        except Exception as e:
+            await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
             try:
-                key_gemini = "AQ.Ab8RN6I-qLW5ZJCLq-sqm0fNLjAP6xo9fqMpD6QvT5RKuBxKyg"
-                gemini_ai = genai.Client(api_key=key_gemini)
-                pdf_file_A = gemini_ai.files.upload(file=MM)
-                responce = gemini_ai.models.generate_content( 
-                    model = f"gemini-{ss}-flash", 
-                    contents=[pdf_file_A,sentence]
+                cv = OpenAI(
+                    base_url = "https://api.groq.com/openai/v1", 
+                    api_key = "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" 
                 )
-                await context.bot.send_message(chat_id=update.effective_chat.id, text=str(responce.text))
-            except Exception as e:
+                responce = cv.chat.completions.create( 
+                    model = "llama-3.3-70b-versatile", 
+                    messages=[{"role":"user", "content":sentence}] 
+                )
+                ai_answer = responce.choices[0].message.content
+                await context.bot.send_message(chat_id=update.effective_chat.id, text=ai_answer)
+            except Exception as e: 
                 await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
         if ffg is None:
             # ساخت پی دی اف جدید
             # پاسخ هوش مصنوعی یک لیستی از شماره ها خواهد بود که باید در هنگام ساخت پی دی اف جدید فقط این شماره ها آگهی ها باید وجود داشته باشند
-            new_list = [1,4,5,7,10,12,15,20,21] # برای تست این لیست فرضی رو بعنوان پاسخ هوش مصنوعی در نظر میگیریم. در واقع باید داشته باشیم new_list = responce.text
+            new_list = [1,4,5,7,10] # برای تست این لیست فرضی رو بعنوان پاسخ هوش مصنوعی در نظر میگیریم. در واقع باید داشته باشیم new_list = responce.text
             first_pdf = "pdf_divar.pdf" # پی دی اف اولیه
             new_pdf = "new_pdf_divar.pdf" # پی دی اف جدید
             reader =PdfReader(first_pdf) # خواندن پی دی اف اولیه
