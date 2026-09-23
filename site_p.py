@@ -177,7 +177,7 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
             sentence = f"لطفا با توجه به این متن : {explain_user}, تمام آگهی های مربوط به این توضیحات را از این متنی که فرستاده میشود پیدا کن. سپس فقط و فقط شماره آگهی آنها رو که در فایل وجود دارد، بصورت یک لیست بده. لطفا سعی کن شماره صفحه آگهی هایی رو پیدا کنی که مطابق با توضیحات یا شباهت زیادی با آن داشته باشند. بقیه آگهی ها رو درنظر نگیر.لطفا هیچ توضیح اضافه ای نده، فقط لیست شماره آگهی ها رو بفرست. متن آگهی ها به این شرح است : {text_long}"
             k=1
             while k==1:
-                for ss in ["1.5","2.5","3.5","3.6"]:
+                for ss in ["1.5","3.5"]:
                     try:
                         key = os.getenv("key_gemini")
                         gemini_ai = genai.Client(api_key=key)
@@ -191,24 +191,24 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         break
                     except Exception as e:
                         await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
+                        await asyncio.sleep(5)
                         key_0 = os.getenv("key_llama")
-                        for sss in ["llama-3.1-70b-versatile","llama-3.3-70b-versatile","llama-3.1-8b-instant"]:
-                            try:
-                                cv = OpenAI(
-                                    base_url = "https://api.groq.com/openai/v1", 
-                                    api_key = key_0 
-                                )
-                                responce = cv.chat.completions.create( 
-                                    model = sss,
-                                    messages=[{"role":"user", "content":sentence}] 
-                                )
-                                ai_answer = responce.choices[0].message.content
-                                await context.bot.send_message(chat_id=update.effective_chat.id, text=ai_answer)
-                                k=2
-                                break
-                            except Exception as e: 
-                                await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
-                                await asyncio.sleep(2)
+                        try:
+                            cv = OpenAI(
+                                base_url = "https://api.groq.com/openai/v1", 
+                                api_key = key_0 
+                            )
+                            responce = cv.chat.completions.create( 
+                                model = "llama-3.1-8b-instant",
+                                messages=[{"role":"user", "content":sentence}] 
+                            )
+                            ai_answer = responce.choices[0].message.content
+                            await context.bot.send_message(chat_id=update.effective_chat.id, text=ai_answer)
+                            k=2
+                            break
+                        except Exception as e: 
+                            await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
+                            await asyncio.sleep(10)
         elif ffg is None:
             # ساخت پی دی اف جدید
             # پاسخ هوش مصنوعی یک لیستی از شماره ها خواهد بود که باید در هنگام ساخت پی دی اف جدید فقط این شماره ها آگهی ها باید وجود داشته باشند
