@@ -7,3 +7,4 @@ pyTelegramBotAPI
 python-telegram-bot
 requests
 google-genai
+pypdf
