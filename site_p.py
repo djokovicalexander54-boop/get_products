@@ -42,15 +42,15 @@ headers = {
     "Accept": "application/json",
     "Baggage": "sentry-environment=client,sentry-release=the-wall-v14-127-2,sentry-public_key=7e7d19d51ebe4bd5955fda8ab50107b1,sentry-trace_id=c5ef694737a35294a1094db798f8ed1d,sentry-sampled=false,sentry-sample_rand=0.12389261611242897,sentry-sample_rate=0.01"
 }
-i=1
-u=0
-t=1
-m=1
-story = [] 
-title_list = []
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="سلام. در این ربات آزمایشی، آگهی های مربوط به کاریابی و استخدام فروشگاه ها و رستوران ها، از سایت دیوار جمع آوری و برای شما نمایش داده میشوند")
     await context.bot.send_message(chat_id=update.effective_chat.id, text="لطفا صبر کنید تا اطلاعات آگهی ها از سایت جمع آوری شود...")
+    i=1
+    u=0
+    t=1
+    m=1
+    story = [] 
+    title_list = []
     with open("title_text.txt", "w", encoding="utf-8") as file:
         while u<=2:
             if t==1:
