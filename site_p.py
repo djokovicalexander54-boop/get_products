@@ -12,7 +12,7 @@ def bb():
     #pdf_file_A = gemini_ai.files.upload(file=MM)
     while True:
         try:
-            key = os.getenv("key")
+            key = os.getenv("key_gemini")
             gemini_ai = genai.Client(api_key=key)
             #pdf_file_A = gemini_ai.files.upload(file=MM)
             responce = gemini_ai.models.generate_content( 
