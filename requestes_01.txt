@@ -9,3 +9,4 @@ requests
 google-genai
 pypdf
 openai>=1.0.0
+google-generativeai
