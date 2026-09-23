@@ -22,6 +22,7 @@ from playwright_stealth import Stealth
 import random
 import asyncio
 proxy_list = ['socks4://85.133.250.27:80', 'socks4://80.191.40.131:5678', 'socks4://194.31.108.109:2080', 'http://37.32.20.216:8080', 'socks5://87.107.68.231:1081', 'http://85.133.250.27:80', 'socks4://81.29.249.82:5071', 'http://194.31.108.109:2080', 'http://78.157.46.76:8090', 'http://79.127.30.250:8080', 'http://195.181.40.34:8080', 'http://5.63.9.218:10808', 'socks5://62.60.210.173:1080', 'http://5.202.179.138:3128', 'http://46.209.207.158:8080', 'http://185.118.153.110:8080', 'socks5://5.144.133.195:9050', 'http://185.88.177.40:80']
+os.system("playwright install chromium")
 TOKEN ="8818973935:AAE4Zr7QVS0FjrA09AmEcy-bT1FMqwh7nGg"
 bot = Bot(TOKEN)
 # ساخت قالب پی دی اف
