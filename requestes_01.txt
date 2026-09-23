@@ -1,5 +1,9 @@
 flask
-gunicorn
-python-telegram-bot
+reportlab
+arabic-reshaper
+python-bidi
+anthropic
 pyTelegramBotAPI
-python-dotenv
+python-telegram-bot
+requests
+openai>=1.0.0
