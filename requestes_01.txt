@@ -9,3 +9,6 @@ requests
 google-genai
 pypdf
 openai>=1.0.0
+playwright
+playwright_stealth
+Flask[async]
