@@ -13,7 +13,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from flask import Flask
 import threading
 import os
-from openai import OpenAI
+from google import genai
 TOKEN ="8895390221:AAHimOc0oaR1rcKv1OpzVrVfv5PIaAwG9BQ"
 bot = Bot(TOKEN)
 # ساخت قالب پی دی اف
@@ -162,18 +162,14 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
         MM = "pdf_divar.pdf"
         with open(MM, "rb") as pdf_file_A:
             explain_user = "سلام. من کارگاه قطعه بندی مرغ (ران رستورانی سایز،فیله مرغ،سینه بدون استخوان، بال بازو،) دارم. لطفا اگهی های مربوط به استخدام نیرو متخصص رستوران مثل سر اشپز کمک اشپز و .. پیدا کن"
-            cv = OpenAI(
-                base_url = "https://api.groq.com/openai/v1", 
-                api_key = "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"
-            )
             sentence = f"لطفا با توجه به این متن : {explain_user}, تمام آگهی های مربوط به این توضیحات را از این فایل PDF : {pdf_file_A}, پیدا کن. سپس فقط و فقط شماره آگهی آنها رو که در فایل PDF وجود دارد، بصورت یک لیست بده. لطفا سعی کن شماره صفحه آگهی هایی رو پیدا کنی که مطابق با توضیحات یا شباهت زیادی با آن داشته باشند. بقیه آگهی ها رو درنظر نگیر"
             try:
-                responce = cv.chat.completions.create(
-                    model = "llama-3.3-70b-versatile", 
-                    messages=[{"role":"user", "content":sentence}] 
+                gemini_ai = genai.Client(api_key="AQ.Ab8RN6KqC-yL4bH-GeTejKoVmhnNsW79hDnOadGruXjgiI7tJg")
+                responce = gemini_ai.models.generate_content( 
+                    model = "gemini-3.5-flash", 
+                    contents=sentence,
                 )
-                ai_answer = responce.choices[0].message.content
-                await context.bot.send_message(chat_id=update.effective_chat.id, text=str(ai_answer))
+                await context.bot.send_message(chat_id=update.effective_chat.id, text=str(responce.text))
             except Exception as e:
                 await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
 appp = Flask(__name__)
