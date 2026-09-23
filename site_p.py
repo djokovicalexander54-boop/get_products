@@ -15,7 +15,7 @@ import threading
 import os
 from google import genai
 from pypdf import PdfReader, PdfWriter
-TOKEN ="8895390221:AAHimOc0oaR1rcKv1OpzVrVfv5PIaAwG9BQ"
+TOKEN ="8818973935:AAE4Zr7QVS0FjrA09AmEcy-bT1FMqwh7nGg"
 bot = Bot(TOKEN)
 # ساخت قالب پی دی اف
 pdfmetrics.registerFont(TTFont('Vazir', "Vazirmatn-Bold.ttf"))
