@@ -167,8 +167,8 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
             sentence = f"لطفا با توجه به این متن : {explain_user}, تمام آگهی های مربوط به این توضیحات را از این فایل PDF : {pdf_file_A}, پیدا کن. سپس فقط و فقط شماره آگهی آنها رو که در فایل PDF وجود دارد، بصورت یک لیست بده. لطفا سعی کن شماره صفحه آگهی هایی رو پیدا کنی که مطابق با توضیحات یا شباهت زیادی با آن داشته باشند. بقیه آگهی ها رو درنظر نگیر"
             for ss in ["1.5","2.5","3.5"]:
                 try:
-                    key = "AQ.Ab8RN6JKzYw4zlZU_bldHt2VB9SvTi5ZPVOUmUkxsRsQBePOgw"
-                    gemini_ai = genai.Client(api_key=key)
+                    key_gemini = "AQ.Ab8RN6I-qLW5ZJCLq-sqm0fNLjAP6xo9fqMpD6QvT5RKuBxKyg"
+                    gemini_ai = genai.Client(api_key=key_gemini)
                     responce = gemini_ai.models.generate_content( 
                         model = f"gemini-{ss}-flash", 
                         contents=sentence,
