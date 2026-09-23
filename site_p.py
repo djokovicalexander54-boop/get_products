@@ -173,7 +173,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     story.append(link)
                     story.append(Spacer(1,20))
                     story.append(PageBreak())
-                print(f"do that {z}")
+                print(f"do that {z}", flush=True)
                 z+=1
             print(f"{len(title_list)} --> OK {u}", flush=True)
             LPD = site_text["pagination"]["data"]["last_post_date"]
