@@ -6,4 +6,4 @@ anthropic
 pyTelegramBotAPI
 python-telegram-bot
 requests
-openai>=1.0.0
+google-genai
