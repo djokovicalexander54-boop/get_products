@@ -8,3 +8,4 @@ python-telegram-bot
 requests
 google-genai
 pypdf
+openai>=1.0.0
