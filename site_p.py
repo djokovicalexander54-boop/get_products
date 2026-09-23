@@ -1,88 +1,193 @@
-from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from telegram import Bot
 import requests
-import os
-from flask import Flask, render_template
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, PageBreak, Spacer
+import arabic_reshaper
+from bidi.algorithm import get_display
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
+from telegram import Update
+from telegram import Bot
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from flask import Flask
+from flask import request
 import threading
-from dotenv import load_dotenv
-load_dotenv()
-TOKEN = os.getenv("TOKEN_key")
+import os
+from openai import OpenAI
+from playwright_stealth import Stealth
+TOKEN ="8895390221:AAHimOc0oaR1rcKv1OpzVrVfv5PIaAwG9BQ"
 bot = Bot(TOKEN)
-name_list = []
-price_list = []
-comment_list = []
-image_list = []
+# ساخت قالب پی دی اف
+pdfmetrics.registerFont(TTFont('Vazir', "Vazirmatn-Bold.ttf"))
+doc = SimpleDocTemplate("pdf_divar.pdf", pagesize=letter)
+styles = getSampleStyleSheet()
+fa_style = ParagraphStyle(
+    'FarsiStyle',
+    parent=styles['Normal'],
+    fontName='Vazir',
+    fontSize=18,
+    leading=20,
+    alignment=2
+)
+fa_style_0 = ParagraphStyle(
+    'FarsiStyle_0',
+    parent=styles['Normal'],
+    fontName='Vazir',
+    fontSize=18,
+    leading=20,
+    alignment=1
+)
+#$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+API_url = "https://api.divar.ir/v8/postlist/w/search"
 headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-    "Authorization": "Bearer 3601352|2pchDqCyyHVTbmIbTvvJ1Gx7r2U7NDCvQPI7oTAPgYf3cNPKXt3zqsHjPa9dkrY681x7dXxDRbtdsBoo3BwGQF7nQ1BU027uLW8AurwFz11zmEfODYodQyNMg3KIdx5vX6SAnKWS0h0uiPn8E4dk0eYYVeM2HBmI0DHyhf1fCr7mZ6xf5BYYj27V97clMuj7Gkx7uoaElyR7VvBK7HmZrx0SEd17wVXDihL9jPEkJT2vXZr910WxOXhDfOVHNQKAaXrCxpBom3JhJz4TUXv2IK2AtNbaoOY3uXJVI9kCPgugo0bJfu9byE3ZRryGZlByW9hlZiptQEf91vCR88cKhty1ai2GX7JvwJhrjv8Hlt0Eg4TK9UjTnrX33XVIMkt4ozkfBP8c9wdroHdstLSofqyIw5lHfjhARnxkd95pwLbTEldt9yTMAalfWjRTTevGHnuyHECuNgBJcLRKTSVHMHkO6QN9oig52LX6pA6aPNeGQaQog38H9zQkNt33adJpdh7aVfe3BfYH1UR2cg625uWGt11k",
     "Accept": "application/json",
-    "Cookie": "_ga=GA1.1.628874232.1763970736; _ym_uid=1763970736422822680; _ym_d=1763970736; tracker_glob_new=dU6Q8eT; ab_test_experiments=%5B%22229ea1a233356b114984cf9fa2ecd3ff%22%2C%224905b18f64695e6dbfd739d20a4ae2c0%22%2C%22f0fd80107233fa604679779d7e121710%22%2C%22ff6e05e42fe897c23b7ed9bfa93e9373%22%2C%2237136fdc21e0b782211ccac8c2d7be63%22%5D; _sp_ses.13cb=*; PHPSESSID=00u8ss4jc9tfd30qc08hlup1sj; tracker_session=dZftEMX; TS01b9d479=0181654207017da64abe3ab865bfe38867079f7796d6f8035cbda1fbbf8a880597b3840206e06c661a89495a9c9538a88443b7ffd2903530b6887e59f20ff8313cc4818563990e3ad48c26aea66f5c0d43aa85b2b9; TS01b6ea4d=01816542076c252359bedd2274d0f6dcbd9dd74dbbd6f8035cbda1fbbf8a880597b384020627665b36500c762db4ce55f388bb9f7bf1cf6a8f821f72b11752448771cdfa3ab8a1a20395f5743933a813962d95a429; TS01c77ebf=01023105919f7f30bc99b6dc8a3494395ad19880c3f743915daaa70230412c1e91031b5c91eeba917d382a129d1ac79d6f5a29e047; _sp_id.13cb=4cfaffba-ff9b-4a42-a43f-13db96f93e4d.1767360169.60.1788585520.1788552733.b32a1298-9e74-4005-8dbc-e73d6056ca7d.a0ac33de-c4b9-445b-8f3e-4fbe11633281.e34968d3-67a6-43c2-a8a0-2305e4d1fcfd.1788585504994.17; _ga_QQKVTD5TG8=GS2.1.s1788585507$o70$g1$t1788585526$j41$l0$h0"
+    "Baggage": "sentry-environment=client,sentry-release=the-wall-v14-127-2,sentry-public_key=7e7d19d51ebe4bd5955fda8ab50107b1,sentry-trace_id=c5ef694737a35294a1094db798f8ed1d,sentry-sampled=false,sentry-sample_rand=0.12389261611242897,sentry-sample_rate=0.01"
 }
-url = "https://api.digikala.com/v1/categories/mobile-phone/brands/samsung/search/?page=1"
-site_code = requests.get(url, headers=headers)
-id_list_1 = []
-id_list_2 = []
-image_url = []
-products = site_code.json()["data"]["products"]
-for item in products:
-    id_1 = item["id"]
-    id_2 = item["url"]["params"][0]["variant_id"]
-    image = item["images"]["main"]["url"][0]
-    id_list_1.append(id_1)
-    id_list_2.append(id_2)
-    image_url.append(image)
-i=0
-image_list = image_url
-for data in id_list_1:
-    url_01 = f"https://api.digikala.com/v2/product/{data}/?product_id={data}&variant_id={id_list_2[i]}"
-    site_dode_01 = requests.get(url_01, headers=headers)
-    name = str(site_dode_01.json()["data"]["data_layer"]["ecommerce"]["detail"]["products"][0]["name"])
-    price000 = str(site_dode_01.json()["data"]["data_layer"]["ecommerce"]["detail"]["products"][0]["price"])
-    price00 = list(price000)
-    del price00[-1]
-    price0 = "".join(price00)
-    price = f"{int(price0):,}"
-    data_type = type(site_dode_01.json()["data"]["product"]["comments_overview"])
-    name_list.append(name)
-    price_list.append(price)
-    if data_type==dict:
-        all_comment = site_dode_01.json()["data"]["product"]["comments_overview"]["overview"] # خلاصه دیدگاه ها
-        comment_list.append(str(all_comment))
-    elif data_type==list:
-        comments = site_dode_01.json()["data"]["product"]["last_comments"]
-        comment = comments[0]["body"]
-        comment_list.append(str(comment))
-    i+=1
-    if i==18:
-        break
-    print(f"ok --> {i}", flush=True)
-print("yes men...", flush=True)
-app = Flask(__name__)
-@app.route("/")
+i=1
+u=0
+t=1
+m=1
+story = [] 
+title_list = []
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="سلام. در این ربات آزمایشی، آگهی های مربوط به کاریابی و استخدام فروشگاه ها و رستوران ها، از سایت دیوار جمع آوری و برای شما نمایش داده میشوند")
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="لطفا صبر کنید تا اطلاعات آگهی ها از سایت جمع آوری شود...")
+    with open("title_text.txt", "w", encoding="utf-8") as file:
+        while u<=2:
+            if t==1:
+                play = {"source_view":"CATEGORY","pagination_data":{
+                "@type":"type.googleapis.com/post_list.PaginationData","last_post_date":"2026-09-22T17:54:48.708176Z","page":1,"layer_page":1,
+                "search_uid":"890682aa-8ab2-472c-bc93-4c771c10dc0b"},
+                "search_data":{"form_data":{"data":{"category":{"str":{"value":"shop-restaurant"}}}}},
+                "city_ids":["1"]}
+                t=2
+            else:
+                play = {"source_view":"CATEGORY","pagination_data":{
+                "@type":"type.googleapis.com/post_list.PaginationData","last_post_date":LPD,"page":P,"layer_page":LP,
+                "search_uid":SU},
+                "search_data":{"form_data":{"data":{"category":{"str":{"value":"shop-restaurant"}}}}},
+                "city_ids":["1"]}        
+            site_text = requests.post(API_url, json=play, headers=headers).json()
+            data_list = site_text["list_widgets"]
+            for data in data_list:
+                title = str(data["data"]["action"]["payload"]["web_info"]["title"])
+                if title not in title_list:
+                    title_list.append(title)
+                    token = str(data["data"]["action"]["payload"]["token"])
+                    location = str(data["data"]["action"]["payload"]["web_info"]["city_persian"])
+                    try:
+                        image_link = str(data["data"]["image_url"])
+                    except:
+                        image_link = "در تیتر آگهی نوشته نشده"
+                    advertisement_link = f"https://divar.ir/v/{title}/{token}"
+                    try:
+                        max_pay = str(data["data"]["top_description_text"])
+                    except:
+                        max_pay = "در تیتر آگهی نوشته نشده"
+                    try:
+                        type_pay = str(data["data"]["middle_description_text"])
+                    except:
+                        type_pay = "در تیتر آگهی نوشته نشده"
+                    try:
+                        time = str(data["data"]["bottom_description_text"])
+                    except:
+                        time = "در تیتر آگهی نوشته نشده"
+                    try:
+                        RR = requests.get(f"https://api.divar.ir/v8/posts-v2/web/{token}", headers=headers).json()
+                        text = str(RR["sections"][2]["widgets"][1]["data"]["text"]) # توضیحات آگهی
+                    except Exception as e:
+                        text ="موردی یافت نشد !!"
+                    file.write(f"شماره {m} : {str(title)}, توضیحات : \n {text} \n \n \n \n \n \n  -----------------------------------------------------------------  \n \n \n \n \n")
+                    m+=1
+                    number_A = Paragraph(get_display(arabic_reshaper.reshape(f"آگهی شماره {i}")), fa_style)
+                    i+=1
+                    story.append(number_A)
+                    story.append(Spacer(1,20))
+                    T_title = Paragraph(get_display(arabic_reshaper.reshape(f"عنوان : {title}")), fa_style)
+                    story.append(T_title)
+                    story.append(Spacer(1,20))
+                    image = Paragraph(get_display(arabic_reshaper.reshape(f"<a href='{image_link}'><font color='red'><u>جهت مشاهده عکس آگهی کلیک کنید</u></font></a>")), fa_style)
+                    story.append(image)
+                    story.append(Spacer(1,20))
+                    L_location = Paragraph(get_display(arabic_reshaper.reshape(f"مکان : {location}")), fa_style)
+                    story.append(L_location)
+                    story.append(Spacer(1,20))
+                    P_max_pay = Paragraph(get_display(arabic_reshaper.reshape(f"مبلغ : {max_pay}")), fa_style)
+                    story.append(P_max_pay)
+                    story.append(Spacer(1,20))
+                    TY_type_pay = Paragraph(get_display(arabic_reshaper.reshape(f"نوع پرداخت : {type_pay}")), fa_style)
+                    story.append(TY_type_pay)
+                    story.append(Spacer(1,20))
+                    TT_time = Paragraph(get_display(arabic_reshaper.reshape(f"زمان : {time}")), fa_style)
+                    story.append(TT_time)
+                    story.append(Spacer(1,20))
+                    EXPLAIN = Paragraph(get_display(arabic_reshaper.reshape("توضیحات :")), fa_style)
+                    story.append(EXPLAIN)
+                    story.append(Spacer(1,20))
+                    T_text = Paragraph(get_display(arabic_reshaper.reshape(text)), fa_style)
+                    story.append(T_text)
+                    story.append(Spacer(1,20))
+                    link = Paragraph(get_display(arabic_reshaper.reshape(f"<a href='{advertisement_link}'><font color='blue'><u>برای مشاهده جزئیات کامل آگهی در سایت دیوار کلیک کنید</u></font></a>")), fa_style)
+                    story.append(link)
+                    story.append(Spacer(1,20))
+                    story.append(PageBreak())
+            print(f"{len(title_list)} --> OK {u}", flush=True)
+            LPD = site_text["pagination"]["data"]["last_post_date"]
+            P = site_text["pagination"]["data"]["page"]
+            LP = site_text["pagination"]["data"]["layer_page"]
+            SU = site_text["pagination"]["data"]["search_uid"]
+            u+=1
+        doc.build(story)
+    key_list = []
+    DD = "pdf_divar.pdf"
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="آگهی ها آماده هست")
+    key_list.append([InlineKeyboardButton(text="ارسال PDF تمام آگهی ها", callback_data=f"K${DD}")])
+    key_list.append([InlineKeyboardButton(text="استفاده از هوش مصنوعی جهت فیلتر کردن", callback_data=f"M_")])
+    reply = InlineKeyboardMarkup(key_list)
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="برای مشاهده تمام آگهی های حوزه استخدام و کاریابی فروشگاه ها و رستوران ها، گزینه اول را کلیک کنید \n در غیر این صورت اگر میخواهید فقط آگهی هایی مربوط به استخدام نیرو متخصص رستوران را دریافت کنید، گزینه دوم را کلیک کنید تا هوش مصنوعی فقط آگهی های این حوزه را برای شما بفرستد", reply_markup=reply)
+#$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    mm = update.callback_query
+    await mm.answer()
+    data = mm.data
+    if data.startswith("K$"):
+        pdf = data.split("$")[1]
+        with open(pdf, "rb") as pdf_data:
+            if pdf_data:
+                await context.bot.send_document(chat_id=update.effective_chat.id, document=pdf_data, caption="تمام آگهی های حوزه استخدام و کاریابی فروشگاه ها و رستوران ها")
+            else:
+                await context.bot.send_message(chat_id=update.effective_chat.id, text="pdf یافت نشد !!!")
+    # فیلتر کردن آگهی های موردنیاز توسط هوش مصنوعی
+    elif data.startswith("M_"):
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="در حال تلاش برای ارتباط گیری با مدل هوش مصنوعی...")
+        MM = "pdf_divar.pdf"
+        with open(MM, "rb") as pdf_file_A:
+            explain_user = "سلام. من کارگاه قطعه بندی مرغ (ران رستورانی سایز،فیله مرغ،سینه بدون استخوان، بال بازو،) دارم. لطفا اگهی های مربوط به استخدام نیرو متخصص رستوران مثل سر اشپز کمک اشپز و .. پیدا کن"
+            cv = OpenAI(
+                base_url = "https://api.groq.com/openai/v1", 
+                api_key = "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"
+            )
+            sentence = f"لطفا با توجه به این متن : {explain_user}, تمام آگهی های مربوط به این توضیحات را از این فایل PDF : {pdf_file_A}, پیدا کن. سپس فقط و فقط شماره آگهی آنها رو که در فایل PDF وجود دارد، بصورت یک لیست بده. لطفا سعی کن شماره صفحه آگهی هایی رو پیدا کنی که مطابق با توضیحات یا شباهت زیادی با آن داشته باشند. بقیه آگهی ها رو درنظر نگیر"
+            try:
+                responce = cv.chat.completions.create(
+                    model = "llama-3.3-70b-versatile", 
+                    messages=[{"role":"user", "content":sentence}] 
+                )
+                ai_answer = responce.choices[0].message.content
+                await context.bot.send_message(chat_id=update.effective_chat.id, text=str(ai_answer))
+            except Exception as e:
+                await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
+appp = Flask(__name__)
+@appp.route("/")
 def home():
-    return render_template(
-        "site_phone.html",
-        names = name_list,
-        prices = price_list,
-        comment_site = comment_list,
-        image = image_list
-    )
-async def start(update: Update ,context:ContextTypes.DEFAULT_TYPE):
-    text = update.message.text
-    if 'send_text_' in text:
-        number = text.split("send_text_")[1]
-        id_name = update.effective_user.first_name
-        await context.bot.send_message(chat_id=update.effective_chat.id , text=f"کاربر {id_name}، شما محصول {number} را انتخاب کردید")
-    else:
-        reply = InlineKeyboardMarkup([[InlineKeyboardButton(text="برای مشاهده محصولات، کلیک کنید", url="https://telegold.ir")]])
-        await context.bot.send_message(chat_id=update.effective_chat.id , text="سلام. در این ربات میتوانید محصولات موبایل سایت دیجی کالا را مشاهده کنید", reply_markup=reply)
-def run_bot():
-    port = int(os.environ.get("PORT",80))
-    app.run(host="0.0.0.0", port=port, debug=False)
-if __name__=='__main__':
-    threading.Thread(target=run_bot, daemon=True).start()
-    app1 = Application.builder().token(TOKEN).build()
-    app1.add_handler(CommandHandler("start",start))
-    app1.run_polling()
+    return "tiday is good..."
+def help():
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
+if __name__ == '__main__':
+    threading.Thread(target=help, daemon=True).start()
+    app = Application.builder().token(TOKEN).build()
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CallbackQueryHandler(click_data))
+    app.run_polling()
