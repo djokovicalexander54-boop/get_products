@@ -162,21 +162,19 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ffg = None
         await context.bot.send_message(chat_id=update.effective_chat.id, text="در حال تلاش برای ارتباط گیری با مدل هوش مصنوعی...")
         MM = "pdf_divar.pdf"
-        with open(MM, "rb") as pdf_file_A:
-            explain_user = "سلام. من کارگاه قطعه بندی مرغ (ران رستورانی سایز،فیله مرغ،سینه بدون استخوان، بال بازو،) دارم. لطفا اگهی های مربوط به استخدام نیرو متخصص رستوران مثل سر اشپز کمک اشپز و .. پیدا کن"
-            sentence = f"لطفا با توجه به این متن : {explain_user}, تمام آگهی های مربوط به این توضیحات را از این فایل PDF : {pdf_file_A}, پیدا کن. سپس فقط و فقط شماره آگهی آنها رو که در فایل PDF وجود دارد، بصورت یک لیست بده. لطفا سعی کن شماره صفحه آگهی هایی رو پیدا کنی که مطابق با توضیحات یا شباهت زیادی با آن داشته باشند. بقیه آگهی ها رو درنظر نگیر"
-            for ss in ["1.5","2.5","3.5"]:
-                try:
-                    key_gemini = "AQ.Ab8RN6I-qLW5ZJCLq-sqm0fNLjAP6xo9fqMpD6QvT5RKuBxKyg"
-                    gemini_ai = genai.Client(api_key=key_gemini)
-                    responce = gemini_ai.models.generate_content( 
-                        model = f"gemini-{ss}-flash", 
-                        contents=sentence,
-                    )
-                    await context.bot.send_message(chat_id=update.effective_chat.id, text=str(responce.text))
-                    break
-                except Exception as e:
-                    await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
+        explain_user = "سلام. من کارگاه قطعه بندی مرغ (ران رستورانی سایز،فیله مرغ،سینه بدون استخوان، بال بازو،) دارم. لطفا اگهی های مربوط به استخدام نیرو متخصص رستوران مثل سر اشپز کمک اشپز و .. پیدا کن"
+        sentence = f"لطفا با توجه به این متن : {explain_user}, تمام آگهی های مربوط به این توضیحات را از این فایل PDF پیدا کن. سپس فقط و فقط شماره آگهی آنها رو که در فایل PDF وجود دارد، بصورت یک لیست بده. لطفا سعی کن شماره صفحه آگهی هایی رو پیدا کنی که مطابق با توضیحات یا شباهت زیادی با آن داشته باشند. بقیه آگهی ها رو درنظر نگیر.لطفا هیچ توضیح اضافه ای نده، فقط لیست شماره آگهی ها رو بفرست"
+        try:
+            key_gemini = "AQ.Ab8RN6I-qLW5ZJCLq-sqm0fNLjAP6xo9fqMpD6QvT5RKuBxKyg"
+            gemini_ai = genai.Client(api_key=key_gemini)
+            pdf_file_A = gemini_ai.files.upload(file=MM)
+            responce = gemini_ai.models.generate_content( 
+                model = f"gemini-3.5-flash", 
+                contents=[pdf_file_A,sentence]
+            )
+            await context.bot.send_message(chat_id=update.effective_chat.id, text=str(responce.text))
+        except Exception as e:
+            await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
         if ffg is None:
             # ساخت پی دی اف جدید
             # پاسخ هوش مصنوعی یک لیستی از شماره ها خواهد بود که باید در هنگام ساخت پی دی اف جدید فقط این شماره ها آگهی ها باید وجود داشته باشند
