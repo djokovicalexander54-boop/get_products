@@ -172,10 +172,9 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     contents=sentence,
                 )
                 await context.bot.send_message(chat_id=update.effective_chat.id, text=str(responce.text))
-                ffg = 23
             except Exception as e:
                 await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
-        if ffg is not None:
+        if ffg is None:
             # ساخت پی دی اف جدید
             # پاسخ هوش مصنوعی یک لیستی از شماره ها خواهد بود که باید در هنگام ساخت پی دی اف جدید فقط این شماره ها آگهی ها باید وجود داشته باشند
             new_list = [1,4,5,7,10,12,15,20,21] # برای تست این لیست فرضی رو بعنوان پاسخ هوش مصنوعی در نظر میگیریم. در واقع باید داشته باشیم new_list = responce.text
