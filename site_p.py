@@ -11,11 +11,9 @@ from telegram import Update
 from telegram import Bot
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from flask import Flask
-from flask import request
 import threading
 import os
 from openai import OpenAI
-from playwright_stealth import Stealth
 TOKEN ="8895390221:AAHimOc0oaR1rcKv1OpzVrVfv5PIaAwG9BQ"
 bot = Bot(TOKEN)
 # ساخت قالب پی دی اف
