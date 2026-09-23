@@ -179,7 +179,7 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 gemini_ai = genai.Client(api_key=key)
                 #pdf_file_A = gemini_ai.files.upload(file=MM)
                 responce = gemini_ai.models.generate_content( 
-                    model = f"gemini-2.5-flash", 
+                    model = f"gemini-3.6-flash", 
                     contents=[sentence]
                 )
                 await context.bot.send_message(chat_id=update.effective_chat.id, text=str(responce.text))
