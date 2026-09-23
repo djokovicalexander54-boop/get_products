@@ -15,7 +15,7 @@ def bb():
     while True:
         try:
             responce = gemini_ai.models.generate_content( 
-                model = f"gemini-3.5-flash", 
+                model = f"gemini-2.5-flash", 
                 contents=["HELLO"]
             )
             print(responce.text, flush=True)
