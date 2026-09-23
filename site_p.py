@@ -123,7 +123,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     while True:
                         try:
                             print("trying", flush=True)
-                            RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH, proxies=proxy_list[random.randint(0,15)]).json()
+                            RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH).json()
                             title = str(RRR["widget_list"][0]["data"]["title"]) 
                             number = str(RRR["widget_list"][0]["data"]["value"])
                             phone = f"{title} : {number}"
