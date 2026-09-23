@@ -187,7 +187,7 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
             for index, page in enumerate(reader.pages):
                 if index in new_list_0:
                     writer.add_page(page)
-            with open(new_pdf, "wb", encoding="utf-8") as f:
+            with open(new_pdf, "wb") as f:
                 writer.write(f)
             with open(new_pdf, "rb") as ff:
                 if ff:
