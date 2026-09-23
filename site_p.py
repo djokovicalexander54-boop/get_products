@@ -21,7 +21,22 @@ from playwright.async_api import async_playwright
 from playwright_stealth import Stealth
 import random
 import asyncio
-proxy_list = ['socks4://85.133.250.27:80', 'socks4://80.191.40.131:5678', 'socks4://194.31.108.109:2080', 'http://37.32.20.216:8080', 'socks5://87.107.68.231:1081', 'http://85.133.250.27:80', 'socks4://81.29.249.82:5071', 'http://194.31.108.109:2080', 'http://78.157.46.76:8090', 'http://79.127.30.250:8080', 'http://195.181.40.34:8080', 'http://5.63.9.218:10808', 'socks5://62.60.210.173:1080', 'http://5.202.179.138:3128', 'http://46.209.207.158:8080', 'http://185.118.153.110:8080', 'socks5://5.144.133.195:9050', 'http://185.88.177.40:80']
+proxy_list = ["http://109.122.240.157:8118",
+        "socks4://81.12.89.74:4153",
+        "socks4://85.133.250.27:80",
+        "socks4://194.31.108.109:2080",
+        "http://194.31.108.109:2080",
+        "socks5://87.107.68.231:1081",
+        "http://85.9.87.26:8080",
+        "http://80.191.46.62:1090",
+        "http://89.46.219.133:80",
+        "http://81.12.70.98:8080",
+        "http://85.133.250.27:80",
+        "socks5://62.60.210.173:1080",
+        "http://31.14.124.45:8080",
+        "http://185.118.153.110:8080",
+        "http://81.90.144.170:9000",
+        "http://93.118.109.220:8080"]
 os.system("playwright install chromium")
 TOKEN ="8818973935:AAE4Zr7QVS0FjrA09AmEcy-bT1FMqwh7nGg"
 bot = Bot(TOKEN)
@@ -246,10 +261,8 @@ async def click():
                 await page.locator("button[class='kt-button kt-button--primary post-actions__get-contact']").click(force=True)
                 await bot.send_message(chat_id=id , text ="مرحله 4 از 5")
                 await asyncio.sleep(random.randint(1,7))
-                ss_01 = page.locator("div[class='kt-col-5']")
-                ss_02 = ss_01.locator("div[class='expandable-box']")
-                ss_03 = ss_02.locator("div[class='kt-base-row kt-base-row--large kt-unexpandable-row content-l9z8k6']")
-                number = ss_03.locator("div[class='kt-base-row__end kt-unexpandable-row__value-box']")
+                ss_02 = page.locator("div[class='expandable-box']")
+                number = ss_02.locator("div[class='kt-base-row__end kt-unexpandable-row__value-box']")
                 nn = await number.locator("a[class='kt-unexpandable-row__action kt-text-truncate']").first.inner_text()
                 if nn is not None:
                     shot = await page.screenshot()
@@ -265,8 +278,8 @@ async def click():
             except Exception as e:
                 await bot.send_message(chat_id=id , text = f"شماره آگهی موردنظر یافت نشد، با IP دیگری دوباره تلاش میشود")
                 continue
-        if fg==18:
-            await bot.send_message(chat_id=id , text = f"بدلیل سیستم های امنیتی قوی سایت دیوار، دریافت شماره تماس آگهی موردنظر ممکن نیست. \n لطفا آگهی دیگری را انتخاب کنید")
+            if fg==18:
+                await bot.send_message(chat_id=id , text = f"بدلیل سیستم های امنیتی قوی سایت دیوار، دریافت شماره تماس آگهی موردنظر ممکن نیست. \n لطفا آگهی دیگری را انتخاب کنید")
 def help():
     port = int(os.environ.get("PORT", 5000))
     appp.run(host='0.0.0.0', port=port)
