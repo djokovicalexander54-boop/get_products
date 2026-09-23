@@ -14,6 +14,7 @@ from flask import Flask
 import threading
 import os
 from google import genai
+from pypdf import PdfReader, PdfWriter
 TOKEN ="8895390221:AAHimOc0oaR1rcKv1OpzVrVfv5PIaAwG9BQ"
 bot = Bot(TOKEN)
 # ساخت قالب پی دی اف
@@ -158,6 +159,7 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await context.bot.send_message(chat_id=update.effective_chat.id, text="pdf یافت نشد !!!")
     # فیلتر کردن آگهی های موردنیاز توسط هوش مصنوعی
     elif data.startswith("M_"):
+        ffg = None
         await context.bot.send_message(chat_id=update.effective_chat.id, text="در حال تلاش برای ارتباط گیری با مدل هوش مصنوعی...")
         MM = "pdf_divar.pdf"
         with open(MM, "rb") as pdf_file_A:
@@ -170,8 +172,30 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     contents=sentence,
                 )
                 await context.bot.send_message(chat_id=update.effective_chat.id, text=str(responce.text))
+                ffg = 23
             except Exception as e:
                 await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
+        if ffg is not None:
+            # ساخت پی دی اف جدید
+            # پاسخ هوش مصنوعی یک لیستی از شماره ها خواهد بود که باید در هنگام ساخت پی دی اف جدید فقط این شماره ها آگهی ها باید وجود داشته باشند
+            new_list = [1,4,5,7,10,12,15,20,21] # برای تست این لیست فرضی رو بعنوان پاسخ هوش مصنوعی در نظر میگیریم. در واقع باید داشته باشیم new_list = responce.text
+            first_pdf = "pdf_divar.pdf" # پی دی اف اولیه
+            new_pdf = "new_pdf_divar.pdf" # پی دی اف جدید
+            reader =PdfReader(first_pdf) # خواندن پی دی اف اولیه
+            writer = PdfWriter() # آماده سازی پی دی اف جدید جهت ساختن
+            new_list_0 = [q-1 for q in new_list]
+            for index, page in enumerate(reader.pages):
+                if index in new_list_0:
+                    writer.add_page(page)
+            with open(new_pdf, "wb", encoding="utf-8") as f:
+                writer.write(f)
+            with open(new_pdf, "rb") as ff:
+                if ff:
+                    await context.bot.send_document(chat_id=update.effective_chat.id, document=ff, caption="آگهی های فیلتر شده توسط هوش مصنوعی")
+                else:
+                    await context.bot.send_message(chat_id=update.effective_chat.id, text="pdf یافت نشد !!!!")
+        elif ffg is None:
+            await context.bot.send_message(chat_id=update.effective_chat.id, text="داداش!!! هوش مصنوعی کار نکرد..")
 appp = Flask(__name__)
 @appp.route("/")
 def home():
