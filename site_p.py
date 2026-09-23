@@ -16,7 +16,12 @@ import os
 from google import genai
 from openai import OpenAI
 from pypdf import PdfReader, PdfWriter
+from flask import request
+from playwright.async_api import async_playwright
+from playwright_stealth import Stealth
+import random
 import asyncio
+proxy_list = ['socks4://85.133.250.27:80', 'socks4://80.191.40.131:5678', 'socks4://194.31.108.109:2080', 'http://37.32.20.216:8080', 'socks5://87.107.68.231:1081', 'http://85.133.250.27:80', 'socks4://81.29.249.82:5071', 'http://194.31.108.109:2080', 'http://78.157.46.76:8090', 'http://79.127.30.250:8080', 'http://195.181.40.34:8080', 'http://5.63.9.218:10808', 'socks5://62.60.210.173:1080', 'http://5.202.179.138:3128', 'http://46.209.207.158:8080', 'http://185.118.153.110:8080', 'socks5://5.144.133.195:9050', 'http://185.88.177.40:80']
 TOKEN ="8818973935:AAE4Zr7QVS0FjrA09AmEcy-bT1FMqwh7nGg"
 bot = Bot(TOKEN)
 # ساخت قالب پی دی اف
@@ -129,6 +134,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     T_text = Paragraph(get_display(arabic_reshaper.reshape(text)), fa_style)
                     story.append(T_text)
                     story.append(Spacer(1,20))
+                    I_phone = Paragraph(get_display(arabic_reshaper.reshape(f"<a href='https://get-products.onrender.com/click?R1={title}&R2={token}&R3={update.effective_chat.id}'><font color='green'><u>جهت دریافت اطلاعات تماس این آگهی، کلیک کنید و بلافاصله به ربات تلگرام بازگردید</u></font></a>")), fa_style)
+                    story.append(I_phone)
+                    story.append(Spacer(1,20))
                     link = Paragraph(get_display(arabic_reshaper.reshape(f"<a href='{advertisement_link}'><font color='blue'><u>برای مشاهده جزئیات کامل آگهی در سایت دیوار کلیک کنید</u></font></a>")), fa_style)
                     story.append(link)
                     story.append(Spacer(1,20))
@@ -161,7 +169,6 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await context.bot.send_message(chat_id=update.effective_chat.id, text="pdf یافت نشد !!!")
     # فیلتر کردن آگهی های موردنیاز توسط هوش مصنوعی
     elif data.startswith("M_"):
-        ffg = None
         text_long = None
         await context.bot.send_message(chat_id=update.effective_chat.id, text="در حال تلاش برای ارتباط گیری با مدل هوش مصنوعی...")
         MM = "pdf_divar.pdf"
@@ -183,32 +190,14 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     #pdf_file_A = gemini_ai.files.upload(file=MM)
                     responce = gemini_ai.models.generate_content( 
                         model = f"gemini-3.5-flash", 
-                        contents=["HELLO"]
+                        contents=[sentence]
                     )
                     await context.bot.send_message(chat_id=update.effective_chat.id, text=str(responce.text))
                     k=2
                     break
                 except Exception as e:
                     await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
-                    await asyncio.sleep(5)
-                    key_0 = os.getenv("key_llama")
-                    try:
-                        cv = OpenAI(
-                            base_url = "https://api.groq.com/openai/v1", 
-                            api_key = key_0 
-                        )
-                        responce = cv.chat.completions.create( 
-                            model = "llama-3.3-70b-versatile",
-                            messages=[{"role":"user", "content":"HELLO"}] 
-                        )
-                        ai_answer = responce.choices[0].message.content
-                        await context.bot.send_message(chat_id=update.effective_chat.id, text=ai_answer)
-                        k=2
-                        break
-                    except Exception as e: 
-                        await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
-                        await asyncio.sleep(10)
-        elif ffg is None:
+                    await asyncio.sleep(30)
             # ساخت پی دی اف جدید
             # پاسخ هوش مصنوعی یک لیستی از شماره ها خواهد بود که باید در هنگام ساخت پی دی اف جدید فقط این شماره ها آگهی ها باید وجود داشته باشند
             new_list = [1,4,5,7,10] # برای تست این لیست فرضی رو بعنوان پاسخ هوش مصنوعی در نظر میگیریم. در واقع باید داشته باشیم new_list = responce.text
@@ -230,9 +219,54 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             await context.bot.send_message(chat_id=update.effective_chat.id, text="متن pdf خوانده نشد..")
 appp = Flask(__name__)
-@appp.route("/")
-def home():
-    return "tiday is good..."
+@appp.route("/click")
+async def click():
+    title = request.args.get("R1")
+    token = request.args.get("R2")
+    id = request.args.get("R3")
+    await bot.send_message(chat_id=id , text="پنج مرحله برای دریافت اطلاعات تماس آگهی که از pdf انتخاب کردید باید طی شود")
+    url_address = f"https://divar.ir/v/{title}/{token}"
+    print(url_address, flush=True)
+    async with async_playwright() as p:
+        fg=0
+        for PP in proxy_list:
+            await bot.send_message(chat_id=id , text =f"تلاش {fg} برای دریافت اطلاعات تماس")
+            fg+=1
+            try:
+                await bot.send_message(chat_id=id , text ="مرحله 1 از 5")
+                browser = await p.chromium.launch(headless=True, proxy={"server": PP})
+                context = await browser.new_context(storage_state="auth_1.json")
+                stealth = Stealth()
+                page = await context.new_page()
+                await stealth.apply_stealth_async(page)
+                await bot.send_message(chat_id=id , text ="مرحله 2 از 5")
+                await page.goto(url_address, timeout=10000)
+                await bot.send_message(chat_id=id , text ="مرحله 3 از 5")
+                await page.locator("button[class='kt-button kt-button--primary post-actions__get-contact']").click(force=True)
+                await bot.send_message(chat_id=id , text ="مرحله 4 از 5")
+                await asyncio.sleep(random.randint(1,7))
+                ss_01 = page.locator("div[class='kt-col-5']")
+                ss_02 = ss_01.locator("div[class='expandable-box']")
+                ss_03 = ss_02.locator("div[class='kt-base-row kt-base-row--large kt-unexpandable-row content-l9z8k6']")
+                number = ss_03.locator("div[class='kt-base-row__end kt-unexpandable-row__value-box']")
+                nn = await number.locator("a[class='kt-unexpandable-row__action kt-text-truncate']").first.inner_text()
+                if nn is not None:
+                    shot = await page.screenshot()
+                    await bot.send_photo(chat_id=id, photo=shot, caption="نمونه تصویری از آگهی")
+                    print("OKKKKKK", flush=True)
+                    await page.close()
+                    reply = InlineKeyboardMarkup([[InlineKeyboardButton(text="جهت ارسال مجدد فایل pdf کلیک کنید", callback_data="KK_")]])
+                    await bot.send_message(chat_id=id, text=f"شماره آگهی موردنظر : \n {nn}", reply_markup=reply)
+                    break
+                elif nn is None:
+                    await bot.send_message(chat_id=id , text = f"شماره آگهی موردنظر یافت نشد، با IP دیگری دوباره تلاش میشود")
+                    await browser.close()
+            except Exception as e:
+                await bot.send_message(chat_id=id , text = f"شماره آگهی موردنظر یافت نشد، با IP دیگری دوباره تلاش میشود")
+                await browser.close()
+                continue
+        if fg==18:
+            await bot.send_message(chat_id=id , text = f"بدلیل سیستم های امنیتی قوی سایت دیوار، دریافت شماره تماس آگهی موردنظر ممکن نیست. \n لطفا آگهی دیگری را انتخاب کنید")
 def help():
     port = int(os.environ.get("PORT", 5000))
     appp.run(host='0.0.0.0', port=port)
