@@ -1,4 +1,4 @@
-import google.generativeai as genai
+from google import genai
 from flask import Flask
 import time
 import os
@@ -9,13 +9,16 @@ def home():
     return "run"
 def bb():
     m=1
-    key = os.getenv("key")
-    genai.configure(api_key=key)
     #pdf_file_A = gemini_ai.files.upload(file=MM)
-    model = genai.GenerativeModel("gemini-1.5-flash")
     while True:
         try:
-            responce = model.generate_content("HELLO")
+            key = os.getenv("key")
+            gemini_ai = genai.Client(api_key=key)
+            #pdf_file_A = gemini_ai.files.upload(file=MM)
+            responce = gemini_ai.models.generate_content( 
+                model = f"gemini-3.5-flash", 
+                contents=["HELLO"]
+            )
             print(responce.text, flush=True)
             break
         except Exception as e:
