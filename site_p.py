@@ -182,7 +182,7 @@ def home():
     return "tiday is good..."
 def help():
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    appp.run(host='0.0.0.0', port=port)
 if __name__ == '__main__':
     threading.Thread(target=help, daemon=True).start()
     app = Application.builder().token(TOKEN).build()
