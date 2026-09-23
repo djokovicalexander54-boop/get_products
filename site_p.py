@@ -183,7 +183,7 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     #pdf_file_A = gemini_ai.files.upload(file=MM)
                     responce = gemini_ai.models.generate_content( 
                         model = f"gemini-3.5-flash", 
-                        contents=[sentence]
+                        contents=["HELLO"]
                     )
                     await context.bot.send_message(chat_id=update.effective_chat.id, text=str(responce.text))
                     k=2
@@ -199,7 +199,7 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         )
                         responce = cv.chat.completions.create( 
                             model = "llama-3.3-70b-versatile",
-                            messages=[{"role":"user", "content":sentence}] 
+                            messages=[{"role":"user", "content":"HELLO"}] 
                         )
                         ai_answer = responce.choices[0].message.content
                         await context.bot.send_message(chat_id=update.effective_chat.id, text=ai_answer)
