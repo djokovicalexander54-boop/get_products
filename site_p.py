@@ -263,7 +263,6 @@ async def click():
                     await browser.close()
             except Exception as e:
                 await bot.send_message(chat_id=id , text = f"شماره آگهی موردنظر یافت نشد، با IP دیگری دوباره تلاش میشود")
-                await browser.close()
                 continue
         if fg==18:
             await bot.send_message(chat_id=id , text = f"بدلیل سیستم های امنیتی قوی سایت دیوار، دریافت شماره تماس آگهی موردنظر ممکن نیست. \n لطفا آگهی دیگری را انتخاب کنید")
