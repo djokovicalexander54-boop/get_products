@@ -175,7 +175,7 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
             explain_user = "سلام. من کارگاه قطعه بندی مرغ (ران رستورانی سایز،فیله مرغ،سینه بدون استخوان، بال بازو،) دارم. لطفا اگهی های مربوط به استخدام نیرو متخصص رستوران مثل سر اشپز کمک اشپز و .. پیدا کن"
             sentence = f"لطفا با توجه به این متن : {explain_user}, تمام آگهی های مربوط به این توضیحات را از این متنی که فرستاده میشود پیدا کن. سپس فقط و فقط شماره آگهی آنها رو که در فایل وجود دارد، بصورت یک لیست بده. لطفا سعی کن شماره صفحه آگهی هایی رو پیدا کنی که مطابق با توضیحات یا شباهت زیادی با آن داشته باشند. بقیه آگهی ها رو درنظر نگیر.لطفا هیچ توضیح اضافه ای نده، فقط لیست شماره آگهی ها رو بفرست. متن آگهی ها به این شرح است : {text_long}"
             try:
-                key_gemini = "AQ.Ab8RN6I-qLW5ZJCLq-sqm0fNLjAP6xo9fqMpD6QvT5RKuBxKyg"
+                key_gemini = "AQ.Ab8RN6LE1xYxM_ocOW91pnCs-7ZTrYwsQw1cK2WVQKn3SpsXdA"
                 gemini_ai = genai.Client(api_key=key_gemini)
                 #pdf_file_A = gemini_ai.files.upload(file=MM)
                 responce = gemini_ai.models.generate_content( 
