@@ -141,7 +141,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         time = "در تیتر آگهی نوشته نشده"
                     #-------------
                     # دریافت اطلاعات تماس
-                    zx+=1
                     try:
                         k=1
                         q=1
