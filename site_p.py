@@ -6,19 +6,19 @@ import arabic_reshaper
 from bidi.algorithm import get_display
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from playwright.async_api import async_playwright
+import asyncio
+import random
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 from telegram import Update
 from telegram import Bot
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from flask import Flask
+from flask import request
 import threading
 import os
-from google import genai
-from openai import OpenAI
-from pypdf import PdfReader, PdfWriter
-import random
-import asyncio
-import random
+import time as ww
+from playwright_stealth import Stealth
 # headers for number : 0911 855 2199
 HH_0 = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
@@ -42,8 +42,6 @@ HH_2 = {
 }
 #-----
 HH_list = [HH_0,HH_1,HH_2]
-fa_numbers = "۰۱۲۳۴۵۶۷۸۹"
-en_numbers = "0123456789"
 proxy_list = ["http://109.122.240.157:8118",
         "socks4://81.12.89.74:4153",
         "socks4://85.133.250.27:80",
@@ -60,11 +58,12 @@ proxy_list = ["http://109.122.240.157:8118",
         "http://185.118.153.110:8080",
         "http://81.90.144.170:9000",
         "http://93.118.109.220:8080"]
-TOKEN ="8818973935:AAE4Zr7QVS0FjrA09AmEcy-bT1FMqwh7nGg"
-bot = Bot(TOKEN)
+#-----
+fa_numbers = "۰۱۲۳۴۵۶۷۸۹"
+en_numbers = "0123456789"
 # ساخت قالب پی دی اف
-pdfmetrics.registerFont(TTFont('Vazir', "Vazirmatn-Bold.ttf"))
-doc = SimpleDocTemplate("pdf_divar.pdf", pagesize=letter)
+pdfmetrics.registerFont(TTFont('Vazir', r"C:\Users\Karino\Desktop\Vazirmatn-Bold.ttf"))
+doc = SimpleDocTemplate(r"C:\Users\Karino\Desktop\pdf_divar.pdf", pagesize=letter)
 styles = getSampleStyleSheet()
 fa_style = ParagraphStyle(
     'FarsiStyle',
@@ -84,145 +83,107 @@ fa_style_0 = ParagraphStyle(
 )
 #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 API_url = "https://api.divar.ir/v8/postlist/w/search"
-# هدر جهت دریافت مشخصات کلی آگهی ها
 headers = {
     "Accept": "application/json",
     "Baggage": "sentry-environment=client,sentry-release=the-wall-v14-127-2,sentry-public_key=7e7d19d51ebe4bd5955fda8ab50107b1,sentry-trace_id=c5ef694737a35294a1094db798f8ed1d,sentry-sampled=false,sentry-sample_rand=0.12389261611242897,sentry-sample_rate=0.01"
 }
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="سلام. در این ربات آزمایشی، آگهی های مربوط به کاریابی و استخدام فروشگاه ها و رستوران ها، از سایت دیوار جمع آوری و برای شما نمایش داده میشوند")
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="لطفا صبر کنید تا اطلاعات آگهی ها از سایت جمع آوری شود...")
-    i=1
-    u=0
-    t=1
-    m=1
-    zx=0
-    kk = 1
-    story = [] 
-    title_list = []
-    qq_0=1
-    qq_1=1
-    qq_2=1
-    with open("title_text.txt", "w", encoding="utf-8") as file:
-        while u<=0:
-            if t==1:
-                play = {"source_view":"CATEGORY","pagination_data":{
-                "@type":"type.googleapis.com/post_list.PaginationData","last_post_date":"2026-09-22T17:54:48.708176Z","page":1,"layer_page":1,
-                "search_uid":"890682aa-8ab2-472c-bc93-4c771c10dc0b"},
-                "search_data":{"form_data":{"data":{"category":{"str":{"value":"shop-restaurant"}}}}},
-                "city_ids":["1"]}
-                t=2
-            else:
-                play = {"source_view":"CATEGORY","pagination_data":{
-                "@type":"type.googleapis.com/post_list.PaginationData","last_post_date":LPD,"page":P,"layer_page":LP,
-                "search_uid":SU},
-                "search_data":{"form_data":{"data":{"category":{"str":{"value":"shop-restaurant"}}}}},
-                "city_ids":["1"]}        
-            site_text = requests.post(API_url, json=play, headers=headers).json()
-            data_list = site_text["list_widgets"]
-            for data in data_list:
-                title = str(data["data"]["action"]["payload"]["web_info"]["title"])
-                if title not in title_list:
-                    title_list.append(title)
-                    token = str(data["data"]["action"]["payload"]["token"])
-                    location = str(data["data"]["action"]["payload"]["web_info"]["city_persian"])
-                    try:
-                        image_link = str(data["data"]["image_url"])
-                    except:
-                        image_link = "در تیتر آگهی نوشته نشده"
-                    advertisement_link = f"https://divar.ir/v/{title}/{token}"
-                    try:
-                        max_pay = str(data["data"]["top_description_text"])
-                    except:
-                        max_pay = "در تیتر آگهی نوشته نشده"
-                    try:
-                        type_pay = str(data["data"]["middle_description_text"])
-                    except:
-                        type_pay = "در تیتر آگهی نوشته نشده"
-                    try:
-                        time = str(data["data"]["bottom_description_text"])
-                    except:
-                        time = "در تیتر آگهی نوشته نشده"
-                    #-------------
-                    # دریافت اطلاعات تماس
-                    if zx==20:
-                        number = "? ? ?"
-                    else:
-                        zx+=1
+i=1
+u=0
+t=1
+m=1
+zx=0
+kk=1
+story = [] 
+title_list = []
+qq_0=1
+qq_1=1
+qq_2=1
+with open(r"C:\Users\Karino\Desktop\title_text.txt", "w", encoding="utf-8") as file:
+    while u<=0:
+        if t==1:
+            play = {"source_view":"CATEGORY","pagination_data":{
+            "@type":"type.googleapis.com/post_list.PaginationData","last_post_date":"2026-09-22T17:54:48.708176Z","page":1,"layer_page":1,
+            "search_uid":"890682aa-8ab2-472c-bc93-4c771c10dc0b"},
+            "search_data":{"form_data":{"data":{"category":{"str":{"value":"shop-restaurant"}}}}},
+            "city_ids":["1"]}
+            t=2
+        else:
+            play = {"source_view":"CATEGORY","pagination_data":{
+            "@type":"type.googleapis.com/post_list.PaginationData","last_post_date":LPD,"page":P,"layer_page":LP,
+            "search_uid":SU},
+            "search_data":{"form_data":{"data":{"category":{"str":{"value":"shop-restaurant"}}}}},
+            "city_ids":["1"]}        
+        site_text = requests.post(API_url, json=play, headers=headers).json()
+        data_list = site_text["list_widgets"]
+        for data in data_list:
+            title = str(data["data"]["action"]["payload"]["web_info"]["title"])
+            if title not in title_list:
+                title_list.append(title)
+                token = str(data["data"]["action"]["payload"]["token"])
+                location = str(data["data"]["action"]["payload"]["web_info"]["city_persian"])
+                try:
+                    image_link = str(data["data"]["image_url"])
+                except:
+                    image_link = "در تیتر آگهی نوشته نشده"
+                advertisement_link = f"https://divar.ir/v/{title}/{token}"
+                try:
+                    max_pay = str(data["data"]["top_description_text"])
+                except:
+                    max_pay = "در تیتر آگهی نوشته نشده"
+                try:
+                    type_pay = str(data["data"]["middle_description_text"])
+                except:
+                    type_pay = "در تیتر آگهی نوشته نشده"
+                try:
+                    time = str(data["data"]["bottom_description_text"])
+                except:
+                    time = "در تیتر آگهی نوشته نشده"
+                #-------------
+                # دریافت اطلاعات تماس
+                try:
+                    k=1
+                    q=1
+                    HEAD = HH_list[0]
+                    while k==1:
+                        RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD)
+                        print(f"{RRR.status_code}-->{kk}", flush=True)
+                        kk+=1
+                        code = RRR.json()
                         try:
-                            k=1
-                            q=1
-                            HEAD = HH_list[0]
-                            while k==1:
-                                RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD)
-                                print(f"{RRR.status_code}-->{kk}")
-                                kk+=1
-                                if RRR.status_code==200:
-                                    code = RRR.json()
-                                    number_0 = code["widget_list"][0]["data"]["value"]
-                                    tran = str.maketrans(fa_numbers,en_numbers)
-                                    number = str(number_0).translate(tran)
-                                    LL =list(number)
-                                    if len(LL) == 11:
-                                        number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
-                                    print(number, flush=True)
-                                    k=2
-                                    await asyncio.sleep(5)
-                                else:
-                                    if q==1:
-                                        if qq_0!=20:
-                                            HEAD = HH_list[1]
-                                            await asyncio.sleep(5)
-                                            q+=1
-                                    elif q==2:
-                                        if qq_1!=20:
-                                            HEAD = HH_list[2]
-                                            await asyncio.sleep(5)
-                                            q+=1
-                                    elif q==3:
-                                        for prox in proxy_list:
-                                            RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
-                                            print(f"{RRR.status_code}-->{kk} $$$ {prox}")
-                                            kk+=1
-                                            if RRR.status_code==200:
-                                                code = RRR.json()
-                                                number_0 = code["widget_list"][0]["data"]["value"]
-                                                tran = str.maketrans(fa_numbers,en_numbers)
-                                                number = str(number_0).translate(tran)
-                                                LL =list(number)
-                                                if len(LL) == 11:
-                                                    number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
-                                                print(number, flush=True)
-                                                k=2
-                                                await asyncio.sleep(5)
-                                                break
-                                            else:
-                                                if q==1:
-                                                    if qq_0!=20:
-                                                        HEAD = HH_list[1]
-                                                        await asyncio.sleep(5)
-                                                        q+=1
-                                                elif q==2:
-                                                    if qq_1!=20:
-                                                        HEAD = HH_list[2]
-                                                        await asyncio.sleep(5)
-                                                        q+=1
-                                                else:
-                                                    number = "? ? ?"
-                                                    print(number, flush=True)
-                        except Exception as e:
-                            # شناسایی ربات شماره 911 855 2199
-                            try:
-                                k=1
-                                q=1
-                                HEAD = HH_list[1]
-                                while k==1:
-                                    RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD)
-                                    print(f"{RRR.status_code}-->{kk}")
+                            number_0 = code["widget_list"][0]["data"]["value"]
+                        except:
+                            number_0 = 50
+                        if number_0!=50:
+                            tran = str.maketrans(fa_numbers,en_numbers)
+                            number = str(number_0).translate(tran)
+                            LL =list(number)
+                            if len(LL) == 11:
+                                number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                            print(number, flush=True)
+                            k=2
+                            ww.sleep(5)
+                        else:
+                            if q==1:
+                                if qq_0!=20:
+                                    HEAD = HH_list[1]
+                                    ww.sleep(5)
+                                    q+=1
+                            elif q==2:
+                                if qq_1!=20:
+                                    HEAD = HH_list[2]
+                                    ww.sleep(5)
+                                    q+=1
+                            elif q==3:
+                                for prox in proxy_list:
+                                    RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
+                                    print(f"{RRR.status_code}-->{kk} $$$ {prox}")
                                     kk+=1
-                                    if RRR.status_code==200:
-                                        code = RRR.json()
+                                    code = RRR.json()
+                                    try:
                                         number_0 = code["widget_list"][0]["data"]["value"]
+                                    except:
+                                        number_0 = 60
+                                    if number_0!=60:
                                         tran = str.maketrans(fa_numbers,en_numbers)
                                         number = str(number_0).translate(tran)
                                         LL =list(number)
@@ -230,52 +191,63 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                             number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
                                         print(number, flush=True)
                                         k=2
-                                        await asyncio.sleep(5)
+                                        ww.sleep(5)
+                                        break
                                     else:
                                         if q==1:
                                             if qq_0!=20:
-                                                HEAD = HH_list[2]
-                                                await asyncio.sleep(5)
+                                                HEAD = HH_list[1]
+                                                ww.sleep(5)
                                                 q+=1
-                                        elif q==3:
-                                            for prox in proxy_list:
-                                                RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
-                                                print(f"{RRR.status_code}-->{kk} $$$ {prox}")
-                                                kk+=1
-                                                if RRR.status_code==200:
-                                                    code = RRR.json()
-                                                    number_0 = code["widget_list"][0]["data"]["value"]
-                                                    tran = str.maketrans(fa_numbers,en_numbers)
-                                                    number = str(number_0).translate(tran)
-                                                    LL =list(number)
-                                                    if len(LL) == 11:
-                                                        number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
-                                                    print(number, flush=True)
-                                                    k=2
-                                                    await asyncio.sleep(5)
-                                                    break
-                                                else:
-                                                    if q==1:
-                                                        if qq_0!=20:
-                                                            HEAD = HH_list[2]
-                                                            await asyncio.sleep(5)
-                                                            q+=1
-                                                    else:
-                                                        number = "? ? ?"
-                                                        print(number, flush=True)
-                            except Exception as e:
-                                # شناسایی ریات شماره 922 054 4571
-                                try:
-                                    k=1
-                                    q=1
-                                    HEAD = HH_list[2]
-                                    while k==1:
-                                        RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD)
-                                        print(f"{RRR.status_code}-->{kk}")
+                                        elif q==2:
+                                            if qq_1!=20:
+                                                HEAD = HH_list[2]
+                                                ww.sleep(5)
+                                                q+=1
+                                        else:
+                                            number = "can not be find"
+                                            print(number, flush=True)
+                except Exception as e:
+                    # شناسایی ربات شماره 911 855 2199
+                    try:
+                        k=1
+                        q=1
+                        HEAD = HH_list[1]
+                        while k==1:
+                            RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD)
+                            print(f"{RRR.status_code}-->{kk}")
+                            kk+=1
+                            code = RRR.json()
+                            try:
+                                number_0 = code["widget_list"][0]["data"]["value"]
+                            except:
+                                number_0 = 70
+                            if number_0!=70:
+                                tran = str.maketrans(fa_numbers,en_numbers)
+                                number = str(number_0).translate(tran)
+                                LL =list(number)
+                                if len(LL) == 11:
+                                    number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                                print(number, flush=True)
+                                k=2
+                                ww.sleep(5)
+                            else:
+                                if q==1:
+                                    if qq_0!=20:
+                                        HEAD = HH_list[2]
+                                        ww.sleep(5)
+                                        q+=1
+                                elif q==3:
+                                    for prox in proxy_list:
+                                        RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
+                                        print(f"{RRR.status_code}-->{kk} $$$ {prox}")
                                         kk+=1
-                                        if RRR.status_code==200:
-                                            code = RRR.json()
+                                        code = RRR.json()
+                                        try:
                                             number_0 = code["widget_list"][0]["data"]["value"]
+                                        except:
+                                            number_0 = 80
+                                        if number_0!=80:
                                             tran = str.maketrans(fa_numbers,en_numbers)
                                             number = str(number_0).translate(tran)
                                             LL =list(number)
@@ -283,164 +255,122 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                                 number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
                                             print(number, flush=True)
                                             k=2
-                                            await asyncio.sleep(5)
+                                            ww.sleep(5)
+                                            break
                                         else:
-                                            for prox in proxy_list:
-                                                RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
-                                                print(f"{RRR.status_code}-->{kk} $$$ {prox}")
-                                                kk+=1
-                                                if RRR.status_code==200:
-                                                    code = RRR.json()
-                                                    number_0 = code["widget_list"][0]["data"]["value"]
-                                                    tran = str.maketrans(fa_numbers,en_numbers)
-                                                    number = str(number_0).translate(tran)
-                                                    LL =list(number)
-                                                    if len(LL) == 11:
-                                                        number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
-                                                    print(number, flush=True)
-                                                    k=2
-                                                    await asyncio.sleep(5)
-                                                    break
-                                                else:
-                                                    number = "? ? ?"
-                                                    print(number, flush=True)
-                                except Exception as e:
-                                    # شناسایی ربات شماره 936 163 4571
-                                    number = "? ? ?"
-                                    print(number, flush=True)
-                    #-------------
-                    try:
-                        RR = requests.get(f"https://api.divar.ir/v8/posts-v2/web/{token}", headers=headers).json()
-                        text = str(RR["sections"][2]["widgets"][1]["data"]["text"]) # توضیحات آگهی
+                                            if q==1:
+                                                if qq_0!=20:
+                                                    HEAD = HH_list[2]
+                                                    ww.sleep(5)
+                                                    q+=1
+                                            else:
+                                                number = "can not be find"
+                                                print(number, flush=True)
                     except Exception as e:
-                        text ="موردی یافت نشد !!"
-                    file.write(f"شماره {m} : {str(title)}, توضیحات : \n {text} \n \n \n \n \n \n  -----------------------------------------------------------------  \n \n \n \n \n")
-                    m+=1
-                    number_A = Paragraph(get_display(arabic_reshaper.reshape(f"آگهی شماره {i}")), fa_style)
-                    i+=1
-                    story.append(number_A)
-                    story.append(Spacer(1,20))
-                    T_title = Paragraph(get_display(arabic_reshaper.reshape(f"عنوان : {title}")), fa_style)
-                    story.append(T_title)
-                    story.append(Spacer(1,20))
-                    image = Paragraph(get_display(arabic_reshaper.reshape(f"<a href='{image_link}'><font color='red'><u>جهت مشاهده عکس آگهی کلیک کنید</u></font></a>")), fa_style)
-                    story.append(image)
-                    story.append(Spacer(1,20))
-                    L_location = Paragraph(get_display(arabic_reshaper.reshape(f"مکان : {location}")), fa_style)
-                    story.append(L_location)
-                    story.append(Spacer(1,20))
-                    P_max_pay = Paragraph(get_display(arabic_reshaper.reshape(f"مبلغ : {max_pay}")), fa_style)
-                    story.append(P_max_pay)
-                    story.append(Spacer(1,20))
-                    TY_type_pay = Paragraph(get_display(arabic_reshaper.reshape(f"نوع پرداخت : {type_pay}")), fa_style)
-                    story.append(TY_type_pay)
-                    story.append(Spacer(1,20))
-                    TT_time = Paragraph(get_display(arabic_reshaper.reshape(f"زمان : {time}")), fa_style)
-                    story.append(TT_time)
-                    story.append(Spacer(1,20))
-                    EXPLAIN = Paragraph(get_display(arabic_reshaper.reshape("توضیحات :")), fa_style)
-                    story.append(EXPLAIN)
-                    story.append(Spacer(1,20))
-                    T_text = Paragraph(get_display(arabic_reshaper.reshape(text)), fa_style)
-                    story.append(T_text)
-                    story.append(Spacer(1,20))
-                    I_phone = Paragraph(get_display(arabic_reshaper.reshape(f"phone number : {number}"), fa_style_0))
-                    story.append(I_phone)
-                    story.append(Spacer(1,20))
-                    link = Paragraph(get_display(arabic_reshaper.reshape(f"<a href='{advertisement_link}'><font color='blue'><u>برای مشاهده جزئیات کامل آگهی در سایت دیوار کلیک کنید</u></font></a>")), fa_style)
-                    story.append(link)
-                    story.append(Spacer(1,20))
-                    story.append(PageBreak())
-            print(f"{len(title_list)} --> OK {u}", flush=True)
-            LPD = site_text["pagination"]["data"]["last_post_date"]
-            P = site_text["pagination"]["data"]["page"]
-            LP = site_text["pagination"]["data"]["layer_page"]
-            SU = site_text["pagination"]["data"]["search_uid"]
-            u+=1
-        doc.build(story)
-    key_list = []
-    DD = "pdf_divar.pdf"
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="آگهی ها آماده هست")
-    key_list.append([InlineKeyboardButton(text="ارسال PDF تمام آگهی ها", callback_data=f"K${DD}")])
-    key_list.append([InlineKeyboardButton(text="استفاده از هوش مصنوعی جهت فیلتر کردن", callback_data=f"M_")])
-    reply = InlineKeyboardMarkup(key_list)
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="برای مشاهده تمام آگهی های حوزه استخدام و کاریابی فروشگاه ها و رستوران ها، گزینه اول را کلیک کنید \n در غیر این صورت اگر میخواهید فقط آگهی هایی مربوط به استخدام نیرو متخصص رستوران را دریافت کنید، گزینه دوم را کلیک کنید تا هوش مصنوعی فقط آگهی های این حوزه را برای شما بفرستد", reply_markup=reply)
+                        # شناسایی ریات شماره 922 054 4571
+                        try:
+                            k=1
+                            q=1
+                            HEAD = HH_list[2]
+                            while k==1:
+                                RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD)
+                                print(f"{RRR.status_code}-->{kk}")
+                                kk+=1
+                                code = RRR.json()
+                                try:
+                                    number_0 = code["widget_list"][0]["data"]["value"]
+                                except:
+                                    number_0 = 90
+                                if number_0!=90:
+                                    tran = str.maketrans(fa_numbers,en_numbers)
+                                    number = str(number_0).translate(tran)
+                                    LL =list(number)
+                                    if len(LL) == 11:
+                                        number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                                    print(number, flush=True)
+                                    k=2
+                                    ww.sleep(5)
+                                else:
+                                    for prox in proxy_list:
+                                        RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
+                                        print(f"{RRR.status_code}-->{kk} $$$ {prox}")
+                                        kk+=1
+                                        code = RRR.json()
+                                        try:
+                                            number_0 = code["widget_list"][0]["data"]["value"]
+                                        except:
+                                            number_0 = 100
+                                        if number_0!=100:
+                                            tran = str.maketrans(fa_numbers,en_numbers)
+                                            number = str(number_0).translate(tran)
+                                            LL =list(number)
+                                            if len(LL) == 11:
+                                                number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                                            print(number, flush=True)
+                                            k=2
+                                            ww.sleep(5)
+                                            break
+                                        else:
+                                            number = "can not be find"
+                                            print(number, flush=True)
+                        except Exception as e:
+                            # شناسایی ربات شماره 936 163 4571
+                            number = "can not be find"
+                            print(number, flush=True)
+                #-------------
+                try:
+                    RR = requests.get(f"https://api.divar.ir/v8/posts-v2/web/{token}", headers=headers).json()
+                    text = str(RR["sections"][2]["widgets"][1]["data"]["text"]) # توضیحات آگهی
+                except Exception as e:
+                    text ="موردی یافت نشد !!"
+                file.write(f"شماره {m} : {str(title)}, توضیحات : \n {text} \n \n \n \n \n \n  -----------------------------------------------------------------  \n \n \n \n \n")
+                m+=1
+                number_A = Paragraph(get_display(arabic_reshaper.reshape(f"آگهی شماره {i}")), fa_style)
+                i+=1
+                story.append(number_A)
+                story.append(Spacer(1,20))
+                T_title = Paragraph(get_display(arabic_reshaper.reshape(f"عنوان : {title}")), fa_style)
+                story.append(T_title)
+                story.append(Spacer(1,20))
+                image = Paragraph(get_display(arabic_reshaper.reshape(f"<a href='{image_link}'><font color='red'><u>جهت مشاهده عکس آگهی کلیک کنید</u></font></a>")), fa_style)
+                story.append(image)
+                story.append(Spacer(1,20))
+                L_location = Paragraph(get_display(arabic_reshaper.reshape(f"مکان : {location}")), fa_style)
+                story.append(L_location)
+                story.append(Spacer(1,20))
+                P_max_pay = Paragraph(get_display(arabic_reshaper.reshape(f"مبلغ : {max_pay}")), fa_style)
+                story.append(P_max_pay)
+                story.append(Spacer(1,20))
+                TY_type_pay = Paragraph(get_display(arabic_reshaper.reshape(f"نوع پرداخت : {type_pay}")), fa_style)
+                story.append(TY_type_pay)
+                story.append(Spacer(1,20))
+                TT_time = Paragraph(get_display(arabic_reshaper.reshape(f"زمان : {time}")), fa_style)
+                story.append(TT_time)
+                story.append(Spacer(1,20))
+                EXPLAIN = Paragraph(get_display(arabic_reshaper.reshape("توضیحات :")), fa_style)
+                story.append(EXPLAIN)
+                story.append(Spacer(1,20))
+                T_text = Paragraph(get_display(arabic_reshaper.reshape(text)), fa_style)
+                story.append(T_text)
+                story.append(Spacer(1,20))
+                I_phone = Paragraph(get_display(arabic_reshaper.reshape(f"phone number : {number}"), fa_style_0))
+                story.append(I_phone)
+                story.append(Spacer(1,20))
+                link = Paragraph(get_display(arabic_reshaper.reshape(f"<a href='{advertisement_link}'><font color='blue'><u>برای مشاهده جزئیات کامل آگهی در سایت دیوار کلیک کنید</u></font></a>")), fa_style)
+                story.append(link)
+                story.append(Spacer(1,20))
+                story.append(PageBreak())
+                if zx==50:
+                    u=1
+                    break
+                else:
+                    zx+=1
+        print(f"{len(title_list)} --> OK {u}")
+        LPD = site_text["pagination"]["data"]["last_post_date"]
+        P = site_text["pagination"]["data"]["page"]
+        LP = site_text["pagination"]["data"]["layer_page"]
+        SU = site_text["pagination"]["data"]["search_uid"]
+        u+=1
+    doc.build(story)
 #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    mm = update.callback_query
-    await mm.answer()
-    data = mm.data
-    if data.startswith("K$"):
-        pdf = data.split("$")[1]
-        with open(pdf, "rb") as pdf_data:
-            if pdf_data:
-                await context.bot.send_document(chat_id=update.effective_chat.id, document=pdf_data, caption="تمام آگهی های حوزه استخدام و کاریابی فروشگاه ها و رستوران ها")
-            else:
-                await context.bot.send_message(chat_id=update.effective_chat.id, text="pdf یافت نشد !!!")
-    # فیلتر کردن آگهی های موردنیاز توسط هوش مصنوعی
-    elif data.startswith("M_"):
-        await context.bot.send_message(chat_id=update.effective_chat.id, text="استفاده از مدل هوش مصنوعی در ربات تستی، بدلیل کمبود زمان ساخت نمونه تستی، امکان پذیر نیست!!!")
-        #text_long = None
-        #await context.bot.send_message(chat_id=update.effective_chat.id, text="در حال تلاش برای ارتباط گیری با مدل هوش مصنوعی...")
-        #MM = "pdf_divar.pdf"
-        # خواندن پی دی اف
-        #READ = PdfReader(MM)
-        #text_long = ""
-        #for page in READ.pages:
-        #    text = page.extract_text()
-        #    if text:
-        #        text_long+= f"{text} \n"
-        #if text_long is not None:
-        #    explain_user = "سلام. من کارگاه قطعه بندی مرغ (ران رستورانی سایز،فیله مرغ،سینه بدون استخوان، بال بازو،) دارم. لطفا اگهی های مربوط به استخدام نیرو متخصص رستوران مثل سر اشپز کمک اشپز و .. پیدا کن"
-        #    sentence = f"لطفا با توجه به این متن : {explain_user}, تمام آگهی های مربوط به این توضیحات را از این متنی که فرستاده میشود پیدا کن. سپس فقط و فقط شماره آگهی آنها رو که در فایل وجود دارد، بصورت یک لیست بده. لطفا سعی کن شماره صفحه آگهی هایی رو پیدا کنی که مطابق با توضیحات یا شباهت زیادی با آن داشته باشند. بقیه آگهی ها رو درنظر نگیر.لطفا هیچ توضیح اضافه ای نده، فقط لیست شماره آگهی ها رو بفرست. متن آگهی ها به این شرح است : {text_long}"
-        #    k=1
-        #    while k==1:
-        #        try:
-        #            key = os.getenv("key_gemini")
-        #            gemini_ai = genai.Client(api_key=key)
-        #            responce = gemini_ai.models.generate_content( 
-        #                model = f"gemini-3.5-flash", 
-        #                contents=[sentence]
-        #            )
-        #            await context.bot.send_message(chat_id=update.effective_chat.id, text=str(responce.text))
-        #            k=2
-        #            break
-        #        except Exception as e:
-        #            await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
-        #            await asyncio.sleep(30)
-            # ساخت پی دی اف جدید
-            # پاسخ هوش مصنوعی یک لیستی از شماره ها خواهد بود که باید در هنگام ساخت پی دی اف جدید فقط این شماره ها آگهی ها باید وجود داشته باشند
-        #    new_list = [1,4,5,7,10] # برای تست این لیست فرضی رو بعنوان پاسخ هوش مصنوعی در نظر میگیریم. در واقع باید داشته باشیم new_list = responce.text
-        #    first_pdf = "pdf_divar.pdf" # پی دی اف اولیه
-        #    new_pdf = "new_pdf_divar.pdf" # پی دی اف جدید
-        #    reader =PdfReader(first_pdf) # خواندن پی دی اف اولیه
-        #    writer = PdfWriter() # آماده سازی پی دی اف جدید جهت ساختن
-        #    new_list_0 = [q-1 for q in new_list]
-        #    for index, page in enumerate(reader.pages):
-        #        if index in new_list_0:
-        #            writer.add_page(page)
-        #    with open(new_pdf, "wb") as f:
-        #        writer.write(f)
-        #    with open(new_pdf, "rb") as ff:
-        #        if ff:
-        #            await context.bot.send_document(chat_id=update.effective_chat.id, document=ff, caption="آگهی های فیلتر شده توسط هوش مصنوعی")
-        #        else:
-        #            await context.bot.send_message(chat_id=update.effective_chat.id, text="pdf یافت نشد !!!!")
-        #else:
-        #    await context.bot.send_message(chat_id=update.effective_chat.id, text="متن pdf خوانده نشد..")
-appp = Flask(__name__)
-@appp.route("/")
-def home():
-    return "running..."
-def help():
-    port = int(os.environ.get("PORT", 5000))
-    appp.run(host='0.0.0.0', port=port)
-if __name__ == '__main__':
-    threading.Thread(target=help, daemon=True).start()
-    app = Application.builder().token(TOKEN).build()
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CallbackQueryHandler(click_data))
-    print("yes", flush=True)
-    app.run_polling()
-# https://api.divar.ir/v8/postcontact/web/contact_info_v2/gauq5_if
-# https://api.divar.ir/v8/postcontact/web/contact_info_v2/gag-GubZ
+# فیلتر کردن آگهی های موردنیاز توسط هوش مصنوعی
