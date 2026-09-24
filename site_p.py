@@ -128,17 +128,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         print(phone, flush=True)
                         await asyncio.sleep(1)
                     except:
-                        try:
-                            prox = proxy_list[random.randint(0,15)]
-                            print(prox, flush=True)
-                            RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH, proxies=prox).json()
-                            title = str(RRR["widget_list"][0]["data"]["title"]) 
-                            number = str(RRR["widget_list"][0]["data"]["value"])
-                            phone = f"{title} : {number}"
-                            print(phone, flush=True)
-                            await asyncio.sleep(1)
-                        except:
-                            phone = "اطلاعات تماس یافت نشد"
+                        await asyncio.sleep(3)
+                        while True:
+                            for item in proxy_list:
+                                print(item, flush=True)
+                                try:
+                                    RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH, proxies=item).json()
+                                    title = str(RRR["widget_list"][0]["data"]["title"]) 
+                                    number = str(RRR["widget_list"][0]["data"]["value"])
+                                    phone = f"{title} : {number}"
+                                    print(phone, flush=True)
+                                    await asyncio.sleep(3)
+                                    break
+                                except:
+                                    phone = "اطلاعات تماس یافت نشد"
                     #------------
                     try:
                         RR = requests.get(f"https://api.divar.ir/v8/posts-v2/web/{token}", headers=headers).json()
