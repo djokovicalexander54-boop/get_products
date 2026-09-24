@@ -19,6 +19,8 @@ from pypdf import PdfReader, PdfWriter
 import random
 import asyncio
 import random
+fa_numbers = "۰۱۲۳۴۵۶۷۸۹"
+en_numbers = "0123456789"
 proxy_list = ["http://109.122.240.157:8118",
         "socks4://81.12.89.74:4153",
         "socks4://85.133.250.27:80",
@@ -53,7 +55,7 @@ fa_style_0 = ParagraphStyle(
     'FarsiStyle_0',
     parent=styles['Normal'],
     fontName='Vazir',
-    fontSize=18,
+    fontSize=25,
     leading=20,
     alignment=1
 )
@@ -123,23 +125,31 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     try:
                         RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH).json()
                         title = str(RRR["widget_list"][0]["data"]["title"]) 
-                        number = str(RRR["widget_list"][0]["data"]["value"])
-                        phone = f"{title} : {number}"
-                        print(phone, flush=True)
+                        number_0 = RRR["widget_list"][0]["data"]["value"]
+                        tran = str.maketrans(fa_numbers,en_numbers)
+                        number = str(number_0).translate(tran)
+                        LL =list(number)
+                        if len(LL) == 11:
+                            number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                        print(number, flush=True)
                     except:
+                        print("NO HERE..", flush=True)
                         await asyncio.sleep(3)
                         for item in proxy_list:
-                            print(item, flush=True)
                             try:
                                 RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH, proxies=item).json()
                                 title = str(RRR["widget_list"][0]["data"]["title"]) 
-                                number = str(RRR["widget_list"][0]["data"]["value"])
-                                phone = f"{title} : {number}"
-                                print(phone, flush=True)
+                                number_0 = RRR["widget_list"][0]["data"]["value"]
+                                tran = str.maketrans(fa_numbers,en_numbers)
+                                number = str(number_0).translate(tran)
+                                LL =list(number)
+                                if len(LL) == 11:
+                                    number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                                print(number, flush=True)
                                 break
                             except:
                                 await asyncio.sleep(3)
-                                phone = "اطلاعات تماس یافت نشد"
+                                number = "اطلاعات تماس یافت نشد"
                     #------------
                     try:
                         RR = requests.get(f"https://api.divar.ir/v8/posts-v2/web/{token}", headers=headers).json()
@@ -176,7 +186,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     T_text = Paragraph(get_display(arabic_reshaper.reshape(text)), fa_style)
                     story.append(T_text)
                     story.append(Spacer(1,20))
-                    I_phone = Paragraph(get_display(arabic_reshaper.reshape(phone), fa_style))
+                    I_phone = Paragraph(get_display(arabic_reshaper.reshape(f"phone number : {number}"), fa_style_0))
                     story.append(I_phone)
                     story.append(Spacer(1,20))
                     link = Paragraph(get_display(arabic_reshaper.reshape(f"<a href='{advertisement_link}'><font color='blue'><u>برای مشاهده جزئیات کامل آگهی در سایت دیوار کلیک کنید</u></font></a>")), fa_style)
