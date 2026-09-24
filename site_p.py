@@ -19,6 +19,24 @@ from pypdf import PdfReader, PdfWriter
 import random
 import asyncio
 import random
+# headers for number : 0911 855 2199
+HH_0 = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+    "Accept": "application/json",
+    "Cookie":"did=669b6986-df43-43a3-8b27-5373c7b3ec87; cdid=16ea83bc-d011-4033-846d-b1b312417809; _gcl_au=1.1.1851772210.1789818076; _ga=GA1.1.936183600.1789818077; city=tehran; referrer=; _vid_t=Wg17lsxe/spNfkU5V7YSZN9ryxO/C2ZGKsmN8zuyGQLPThMndOSBB4ruwmBA6FaBUJhb9C83EHp9WA==; multi-city=tehran%7C; ff=%7B%22f%22%3A%7B%22device_fp_enable%22%3Atrue%2C%22enable-places-selector-online-search-web%22%3Atrue%2C%22chat_message_disabled%22%3Atrue%2C%22web_sentry_sample_rate%22%3A0.2%2C%22web_sentry_traces_sample_rate%22%3A0.01%2C%22is_web_proactive_refresh_enabled%22%3Atrue%2C%22post-stats-batch-event-web-max-batch-size%22%3A%2220%22%2C%22post-stats-batch-event-web-flush-interval-sec%22%3A%2220%22%2C%22divar_default_call_center%22%3A%22neda%22%2C%22is_circle_location_enabled%22%3Atrue%2C%22web_client_exporter_page_load_sample_rate%22%3A0.5%7D%2C%22e%22%3A1790232146947%2C%22r%22%3A1790314946947%7D; resolution_width=875; theme=light; token=; sAccessToken=eyJraWQiOiJkLTE3ODk4Mjg0NzAxNDQiLCJ0eXAiOiJKV1QiLCJ2ZXJzaW9uIjoiNCIsImFsZyI6IlJTMjU2In0.eyJpYXQiOjE3OTAyMzc0NjgsImV4cCI6MTc5MDI0NzgyOSwic3ViIjoiMzVhYzgzNDItNzBjZS00OWExLTk0MWEtYmFmNDQyM2QxYmIyIiwidElkIjoicHVibGljIiwic2Vzc2lvbkhhbmRsZSI6IjZjNzk2ZjY0LTg5NTItNDcyZi05NDAyLTI5MTE1NmU0YWVjNiIsInJlZnJlc2hUb2tlbkhhc2gxIjoiZmEyYjcxZTEzM2JmOTEwNTcxZDI0ZTJmZDVkZjlkMDE4MzY1NzBiMjBjMTQ3NmU3NDdlNDA2YWRkMjE0MTE4NyIsInBhcmVudFJlZnJlc2hUb2tlbkhhc2gxIjpudWxsLCJhbnRpQ3NyZlRva2VuIjpudWxsLCJpc3MiOiJodHRwczovL2FwaS5kaXZhci5pci92OC9hdXRoZW50aWNhdGUiLCJwaG9uZU51bWJlciI6Iis5ODkxMTg1NTIxOTkiLCJzdC1wZXJtIjp7InQiOjE3OTAyMzc0NjgyNzIsInYiOltdfSwic3Qtcm9sZSI6eyJ0IjoxNzkwMjM3NDY4MjcyLCJ2IjpbXX19.PVQ6L6lQIw4z9R65SExFhZ8sSvdpsQJzKG7aZoWvAvhDzB_X4ynC7TK5qu92_JHxn0wtiAXHBO-xLH-uhCQ1VTPw5lj0RyVavNnM7jvT35gPSavNNTOWdK4LSIEw2pymj4zzdgWRrYJPtOrU3FLG8m5EasOfSEnQbGIeDcIaMiolWL7NIqa2yBi6jEuBK8Nmy1iZRe4WzSxwS6_0-JkDGbqW9CWe5LZJYecNo5qJCeM_ADrSl4U4QZxGye1jq8r6WqIdjgWzRx2peDmHkFF6fsWbq-74jz2yCgkPcNUcVRhvm6PZCCiMevV-fLbjqF_IW0ao_yD9rI9ds_HTOkY50A; sFrontToken=eyJ1aWQiOiIzNWFjODM0Mi03MGNlLTQ5YTEtOTQxYS1iYWY0NDIzZDFiYjIiLCJhdGUiOjE3OTAyNDc4MjkwMDAsInVwIjp7ImFudGlDc3JmVG9rZW4iOm51bGwsImV4cCI6MTc5MDI0NzgyOSwiaWF0IjoxNzkwMjM3NDY4LCJpc3MiOiJodHRwczovL2FwaS5kaXZhci5pci92OC9hdXRoZW50aWNhdGUiLCJwYXJlbnRSZWZyZXNoVG9rZW5IYXNoMSI6bnVsbCwicGhvbmVOdW1iZXIiOiIrOTg5MTE4NTUyMTk5IiwicmVmcmVzaFRva2VuSGFzaDEiOiJmYTJiNzFlMTMzYmY5MTA1NzFkMjRlMmZkNWRmOWQwMTgzNjU3MGIyMGMxNDc2ZTc0N2U0MDZhZGQyMTQxMTg3Iiwic2Vzc2lvbkhhbmRsZSI6IjZjNzk2ZjY0LTg5NTItNDcyZi05NDAyLTI5MTE1NmU0YWVjNiIsInN0LXBlcm0iOnsidCI6MTc5MDIzNzQ2ODI3MiwidiI6W119LCJzdC1yb2xlIjp7InQiOjE3OTAyMzc0NjgyNzIsInYiOltdfSwic3ViIjoiMzVhYzgzNDItNzBjZS00OWExLTk0MWEtYmFmNDQyM2QxYmIyIiwidElkIjoicHVibGljIn19; csid=8778a0bb2cc6dedab6; _ga_1G1K17N77F=GS2.1.s1790237288$o27$g1$t1790237485$j26$l0$h0"
+}
+# headers for number : 0922 054 4571
+HH_1 = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:156.0) Gecko/20100101 Firefox/15",
+    "Accept": "*/*",
+    "Cookie":"did=7e251f52-f2fd-4fc1-9658-f1dae48402be; cdid=f0a03429-a904-48d4-bbea-a19669cb057b; _gcl_au=1.1.2013526149.1789842491; _ga_1G1K17N77F=GS2.1.s1790238556$o3$g1$t1790238606$j10$l0$h0; _ga=GA1.1.598642937.1789842491; csid=04e608ceb22a28d342; resolution_width=1920; theme=light; ff=%7B%22f%22%3A%7B%22device_fp_enable%22%3Atrue%2C%22enable-places-selector-online-search-web%22%3Atrue%2C%22chat_message_disabled%22%3Atrue%2C%22web_sentry_sample_rate%22%3A0.2%2C%22web_sentry_traces_sample_rate%22%3A0.01%2C%22is_web_p…NoMSI6bnVsbCwicGhvbmVOdW1iZXIiOiIrOTg5MjIwNTQ0NTcxIiwicmVmcmVzaFRva2VuSGFzaDEiOiJhYWE1NTBiNGQ1YjMyZWYzZmY4OWU0NzYyOTYzMDY4Y2RkYzBlOWEwNDM0MDFjMzFhZjI2YmZlZDVmNGI2NjgwIiwic2Vzc2lvbkhhbmRsZSI6ImE2MDI4ZTcyLWU0ZGUtNDdhMC04MTA4LTA1NGU4MDAyOTg5NSIsInN0LXBlcm0iOnsidCI6MTc5MDIzODU4NTM3MiwidiI6W119LCJzdC1yb2xlIjp7InQiOjE3OTAyMzg1ODUzNzIsInYiOltdfSwic3ViIjoiYWYxYjcwZjYtMWFlMS00ZTQ3LWFlYWQtOTMxZmVkYzM5MjM0IiwidElkIjoicHVibGljIn19; _vid_t=CfPgOf5eTt8M82pAuVLPKHamoQJJCtU2D8aAgSjYIcRhbKhOoee0Hv+p3pFNhBwlt+912OZIQFjxGw=="
+}
+# headers for number : 0936 163 4571
+HH_3 = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+    "Accept": "application/json",
+    "Cookie":""
+}
 fa_numbers = "۰۱۲۳۴۵۶۷۸۹"
 en_numbers = "0123456789"
 proxy_list = ["http://109.122.240.157:8118",
@@ -116,29 +134,23 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         time = str(data["data"]["bottom_description_text"])
                     except:
                         time = "در تیتر آگهی نوشته نشده"
-                    # اطلاعات تماس
-                    HH = {
-                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
-                        "Accept": "application/json",
-                        "Cookie": "did=669b6986-df43-43a3-8b27-5373c7b3ec87; cdid=16ea83bc-d011-4033-846d-b1b312417809; _gcl_au=1.1.1851772210.1789818076; theme=light; _ga=GA1.1.936183600.1789818077; city=tehran; referrer=; _vid_t=Wg17lsxe/spNfkU5V7YSZN9ryxO/C2ZGKsmN8zuyGQLPThMndOSBB4ruwmBA6FaBUJhb9C83EHp9WA==; csid=f9052dd026834078e2; multi-city=tehran%7C; sAccessToken=eyJraWQiOiJkLTE3ODk4Mjg0NzAxNDQiLCJ0eXAiOiJKV1QiLCJ2ZXJzaW9uIjoiNCIsImFsZyI6IlJTMjU2In0.eyJpYXQiOjE3OTAyMjg1NDYsImV4cCI6MTc5MDIzODgzMiwic3ViIjoiOWFmMDI0ODItMDNmYy00NjAxLWJlMTMtM2Y0YmZhOGRiN2U1IiwidElkIjoicHVibGljIiwic2Vzc2lvbkhhbmRsZSI6IjA2YWY0NTEzLTZiOTctNGFjZS05MTRlLTEyZDk5M2U2NjA4MyIsInJlZnJlc2hUb2tlbkhhc2gxIjoiMmYzYjRhZTJhNWU5YjhmMGNkNjI4ZmVhYzdlM2Y5YjEzYzNlOTZlNjc0ODE0ZGQwZjFhNzE4ZTE5NTRhZWUzNiIsInBhcmVudFJlZnJlc2hUb2tlbkhhc2gxIjoiZjVhNWRlMzc3MWExYThiMDkzNjk2M2QxZGYyYzYxYTk5ZTZiNTVkY2IxYjkwM2I5ZGNkMWQ1ZWYzMzgyODhmYSIsImFudGlDc3JmVG9rZW4iOm51bGwsImlzcyI6Imh0dHBzOi8vYXBpLmRpdmFyLmlyL3Y4L2F1dGhlbnRpY2F0ZSIsInBob25lTnVtYmVyIjoiKzk4OTM2MTYzNDU3MSIsInN0LXBlcm0iOnsidCI6MTc5MDIyODU0NiwidiI6W119LCJzdC1yb2xlIjp7InQiOjE3OTAyMjg1NDYsInYiOltdfX0.u9vDVE_LqT7VgDFML3-J-NnAl9TzwFa98VT8OEkm6s0W3a_dwDCRM5s_b5cuS-iYDnCc1QXl2QT0WkzhaehZe0-y9CWc35DUCvxC05LtbGxDggTHYoEtWW5K60bpclFZau3JCgiO07LpvoNB9lhI_nyqPyRleGI9Yt4JBz_KVKhl5jGG6_B07Q2z-4924ZpfFaqpR6omc9uCCoDWH3PL2RHsFsNRO1tWlTRDnU3NYQfUJTKe0KdDlI0BfZ_xquQHzQ5yynCe-5CgBTLiv4ijNme_fB4sK7mTz-2vxJubsHkEvihZQyaS59nKVaeq_b9KEgvtKeeMRzMMjyACDLOCQQ; sFrontToken=eyJ1aWQiOiI5YWYwMjQ4Mi0wM2ZjLTQ2MDEtYmUxMy0zZjRiZmE4ZGI3ZTUiLCJhdGUiOjE3OTAyMzg4MzIwMDAsInVwIjp7ImFudGlDc3JmVG9rZW4iOm51bGwsImV4cCI6MTc5MDIzODgzMiwiaWF0IjoxNzkwMjI4NTQ2LCJpc3MiOiJodHRwczovL2FwaS5kaXZhci5pci92OC9hdXRoZW50aWNhdGUiLCJwYXJlbnRSZWZyZXNoVG9rZW5IYXNoMSI6ImY1YTVkZTM3NzFhMWE4YjA5MzY5NjNkMWRmMmM2MWE5OWU2YjU1ZGNiMWI5MDNiOWRjZDFkNWVmMzM4Mjg4ZmEiLCJwaG9uZU51bWJlciI6Iis5ODkzNjE2MzQ1NzEiLCJyZWZyZXNoVG9rZW5IYXNoMSI6IjJmM2I0YWUyYTVlOWI4ZjBjZDYyOGZlYWM3ZTNmOWIxM2MzZTk2ZTY3NDgxNGRkMGYxYTcxOGUxOTU0YWVlMzYiLCJzZXNzaW9uSGFuZGxlIjoiMDZhZjQ1MTMtNmI5Ny00YWNlLTkxNGUtMTJkOTkzZTY2MDgzIiwic3QtcGVybSI6eyJ0IjoxNzkwMjI4NTQ2LCJ2IjpbXX0sInN0LXJvbGUiOnsidCI6MTc5MDIyODU0NiwidiI6W119LCJzdWIiOiI5YWYwMjQ4Mi0wM2ZjLTQ2MDEtYmUxMy0zZjRiZmE4ZGI3ZTUiLCJ0SWQiOiJwdWJsaWMifX0=; ff=%7B%22f%22%3A%7B%22device_fp_enable%22%3Atrue%2C%22enable-places-selector-online-search-web%22%3Atrue%2C%22chat_message_disabled%22%3Atrue%2C%22web_sentry_sample_rate%22%3A0.2%2C%22web_sentry_traces_sample_rate%22%3A0.01%2C%22is_web_proactive_refresh_enabled%22%3Atrue%2C%22post-stats-batch-event-web-max-batch-size%22%3A%2220%22%2C%22post-stats-batch-event-web-flush-interval-sec%22%3A%2220%22%2C%22divar_default_call_center%22%3A%22neda%22%2C%22is_circle_location_enabled%22%3Atrue%2C%22web_client_exporter_page_load_sample_rate%22%3A0.5%7D%2C%22e%22%3A1790232146947%2C%22r%22%3A1790314946947%7D; _ga_1G1K17N77F=GS2.1.s1790228549$o26$g1$t1790228560$j49$l0$h0; resolution_width=875"
-                    }
-                    try:
-                        RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH).json()
-                        title = str(RRR["widget_list"][0]["data"]["title"]) 
-                        number_0 = RRR["widget_list"][0]["data"]["value"]
-                        tran = str.maketrans(fa_numbers,en_numbers)
-                        number = str(number_0).translate(tran)
-                        LL =list(number)
-                        if len(LL) == 11:
-                            number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
-                        print(number, flush=True)
-                    except:
-                        print("NO HERE..", flush=True)
-                        await asyncio.sleep(3)
-                        for item in proxy_list:
+                    # دریافت اطلاعات تماس
+                    for prox in proxy_list:
+                        try:
+                            RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_0).json()
+                            number_0 = RRR["widget_list"][0]["data"]["value"]
+                            tran = str.maketrans(fa_numbers,en_numbers)
+                            number = str(number_0).translate(tran)
+                            LL =list(number)
+                            if len(LL) == 11:
+                                number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                            print(number, flush=True)
+                            break
+                        except:
+                            print("NO HERE.. 1", flush=True)
+                            await asyncio.sleep(1)
                             try:
-                                RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH, proxies=item).json()
-                                title = str(RRR["widget_list"][0]["data"]["title"]) 
+                                RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_1).json() 
                                 number_0 = RRR["widget_list"][0]["data"]["value"]
                                 tran = str.maketrans(fa_numbers,en_numbers)
                                 number = str(number_0).translate(tran)
@@ -148,9 +160,63 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                 print(number, flush=True)
                                 break
                             except:
-                                await asyncio.sleep(3)
-                                number = "اطلاعات تماس یافت نشد"
-                    #------------
+                                print("NO HERE.. 2", flush=True)
+                                await asyncio.sleep(1)
+                                try:
+                                    RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_3).json()
+                                    number_0 = RRR["widget_list"][0]["data"]["value"]
+                                    tran = str.maketrans(fa_numbers,en_numbers)
+                                    number = str(number_0).translate(tran)
+                                    LL =list(number)
+                                    if len(LL) == 11:
+                                        number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                                    print(number, flush=True)
+                                    break
+                                except:
+                                    #  استفاده از پروکسی های چرخشی
+                                    print("NO HERE.. 3", flush=True)
+                                    await asyncio.sleep(1)
+                                    try:
+                                        RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_0, proxies=prox).json()
+                                        number_0 = RRR["widget_list"][0]["data"]["value"]
+                                        tran = str.maketrans(fa_numbers,en_numbers)
+                                        number = str(number_0).translate(tran)
+                                        LL =list(number)
+                                        if len(LL) == 11:
+                                            number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                                        print(number, flush=True)
+                                        break
+                                    except:
+                                        print("NO HERE.. 4", flush=True)
+                                        await asyncio.sleep(1)
+                                        try:
+                                            RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_1, proxies=prox).json() 
+                                            number_0 = RRR["widget_list"][0]["data"]["value"]
+                                            tran = str.maketrans(fa_numbers,en_numbers)
+                                            number = str(number_0).translate(tran)
+                                            LL =list(number)
+                                            if len(LL) == 11:
+                                                number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                                            print(number, flush=True)
+                                            break
+                                        except:
+                                            print("NO HERE.. 5", flush=True)
+                                            await asyncio.sleep(1)
+                                            try:
+                                                RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_3, proxies=prox).json()
+                                                number_0 = RRR["widget_list"][0]["data"]["value"]
+                                                tran = str.maketrans(fa_numbers,en_numbers)
+                                                number = str(number_0).translate(tran)
+                                                LL =list(number)
+                                                if len(LL) == 11:
+                                                    number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                                                print(number, flush=True)
+                                                break
+                                            except:
+                                                print("we can not!! try again IP", flush=True)
+                                                await asyncio.sleep(3)
+                                                number = "do not find"
+                    #---------------------------------------------------------------
                     try:
                         RR = requests.get(f"https://api.divar.ir/v8/posts-v2/web/{token}", headers=headers).json()
                         text = str(RR["sections"][2]["widgets"][1]["data"]["text"]) # توضیحات آگهی
