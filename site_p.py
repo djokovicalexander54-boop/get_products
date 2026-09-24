@@ -524,7 +524,6 @@ async def scrapt(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     story.append(link)
                     story.append(Spacer(1,20))
                     story.append(PageBreak())
-            print(f"{len(title_list)} --> OK {u}", flush=True)
             LPD = site_text["pagination"]["data"]["last_post_date"]
             P = site_text["pagination"]["data"]["page"]
             LP = site_text["pagination"]["data"]["layer_page"]
@@ -533,7 +532,6 @@ async def scrapt(update: Update, context: ContextTypes.DEFAULT_TYPE):
         doc.build(story)
     key_list = []
     DD = "pdf_divar.pdf"
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="آگهی ها آماده هست")
     key_list.append([InlineKeyboardButton(text="ارسال PDF تمام آگهی ها", callback_data=f"K${DD}")])
     key_list.append([InlineKeyboardButton(text="ارسال PDF آگهی ها همراه با شماره تلفن", callback_data=f"F_")])
     key_list.append([InlineKeyboardButton(text="استفاده از هوش مصنوعی جهت فیلتر کردن", callback_data=f"M_")])
@@ -543,10 +541,10 @@ async def again(update: Update, context: ContextTypes.DEFAULT_TYPE):
     k=1
     while k==1:
         await scrapt(update , context)
-        await asyncio.sleep(30)
+        await asyncio.sleep(1800)
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="سلام. در این ربات آزمایشی، آگهی های مربوط به کاریابی و استخدام فروشگاه ها و رستوران ها، از سایت دیوار جمع آوری و برای شما نمایش داده میشوند")
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="لطفا حدود دو دقیقه صبر کنید تا اطلاعات آگهی ها از سایت جمع آوری شود. \n از این لحظه به بعد هر نیم ساعت یکبار، یک فایل pdf در تلگرام برای شما فرستاده میشود")
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="از این لحظه، هر نیم ساعت یکبار برای شما در همین جا متنی حاوی دکمه های مشخصی فرستاده میشود. با انتخاب کلید موردنظر، فایل pdf برای شما فرستاده خواهد شد \n لطفا حدود یک دقیقه صبر کنید تا آخریت آگهی های موجود در حوزه موردنظر جمع آوری شوند.")
     asyncio.create_task(again(update , context))
 #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
