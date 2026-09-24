@@ -542,7 +542,7 @@ async def scrapt(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def again(update: Update, context: ContextTypes.DEFAULT_TYPE):
     k=1
     while k==1:
-        await scrapt()
+        await scrapt(update , context)
         await asyncio.sleep(30)
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="سلام. در این ربات آزمایشی، آگهی های مربوط به کاریابی و استخدام فروشگاه ها و رستوران ها، از سایت دیوار جمع آوری و برای شما نمایش داده میشوند")
