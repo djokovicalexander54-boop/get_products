@@ -86,9 +86,7 @@ headers = {
     "Accept": "application/json",
     "Baggage": "sentry-environment=client,sentry-release=the-wall-v14-127-2,sentry-public_key=7e7d19d51ebe4bd5955fda8ab50107b1,sentry-trace_id=c5ef694737a35294a1094db798f8ed1d,sentry-sampled=false,sentry-sample_rand=0.12389261611242897,sentry-sample_rate=0.01"
 }
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="سلام. در این ربات آزمایشی، آگهی های مربوط به کاریابی و استخدام فروشگاه ها و رستوران ها، از سایت دیوار جمع آوری و برای شما نمایش داده میشوند")
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="لطفا صبر کنید تا اطلاعات آگهی ها از سایت جمع آوری شود...")
+async def scrapt(update: Update, context: ContextTypes.DEFAULT_TYPE):
     i=1
     u=0
     t=1
@@ -100,7 +98,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     qq_1=1
     qq_2=1
     with open("title_text.txt", "w", encoding="utf-8") as file:
-        while u<=20:
+        while u<=2:
             if t==1:
                 play = {"source_view":"CATEGORY","pagination_data":{
                 "@type":"type.googleapis.com/post_list.PaginationData","last_post_date":"2026-09-22T17:54:48.708176Z","page":1,"layer_page":1,
@@ -541,6 +539,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     key_list.append([InlineKeyboardButton(text="استفاده از هوش مصنوعی جهت فیلتر کردن", callback_data=f"M_")])
     reply = InlineKeyboardMarkup(key_list)
     await context.bot.send_message(chat_id=update.effective_chat.id, text="برای مشاهده تمام آگهی های حوزه استخدام و کاریابی فروشگاه ها و رستوران ها، گزینه اول را کلیک کنید \n در غیر این صورت اگر میخواهید آگهی های مربوط به استخدام نیرو متخصص رستوران همراه با اطلاعات تماس آنها را دریافت کنید، گزینه دوم را کلیک کنید \n گزینه سوم بدلیل زمانبر بودن اتصال موقتا بسته است", reply_markup=reply)
+async def again(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    k=1
+    while k==1:
+        await scrapt()
+        await asyncio.sleep(30)
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="سلام. در این ربات آزمایشی، آگهی های مربوط به کاریابی و استخدام فروشگاه ها و رستوران ها، از سایت دیوار جمع آوری و برای شما نمایش داده میشوند")
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="لطفا حدود دو دقیقه صبر کنید تا اطلاعات آگهی ها از سایت جمع آوری شود. \n از این لحظه به بعد هر نیم ساعت یکبار، یک فایل pdf در تلگرام برای شما فرستاده میشود")
+    asyncio.create_task(again(update , context))
 #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mm = update.callback_query
