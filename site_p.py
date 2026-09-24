@@ -146,9 +146,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                 number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
                             print(number, flush=True)
                             break
-                        except:
+                        except Exception as e:
+                            await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
                             print("NO HERE.. 1", flush=True)
-                            await asyncio.sleep(1)
+                            await asyncio.sleep(5)
                             try:
                                 RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_1).json() 
                                 number_0 = RRR["widget_list"][0]["data"]["value"]
@@ -159,9 +160,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                     number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
                                 print(number, flush=True)
                                 break
-                            except:
+                            except Exception as e:
+                                await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
                                 print("NO HERE.. 2", flush=True)
-                                await asyncio.sleep(1)
+                                await asyncio.sleep(5)
                                 try:
                                     RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_3).json()
                                     number_0 = RRR["widget_list"][0]["data"]["value"]
@@ -172,10 +174,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                         number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
                                     print(number, flush=True)
                                     break
-                                except:
+                                except Exception as e:
+                                    await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
                                     #  استفاده از پروکسی های چرخشی
                                     print("NO HERE.. 3", flush=True)
-                                    await asyncio.sleep(1)
+                                    await asyncio.sleep(5)
                                     try:
                                         RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_0, proxies=prox).json()
                                         number_0 = RRR["widget_list"][0]["data"]["value"]
@@ -186,9 +189,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                             number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
                                         print(number, flush=True)
                                         break
-                                    except:
+                                    except Exception as e:
+                                        await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
                                         print("NO HERE.. 4", flush=True)
-                                        await asyncio.sleep(1)
+                                        await asyncio.sleep(5)
                                         try:
                                             RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_1, proxies=prox).json() 
                                             number_0 = RRR["widget_list"][0]["data"]["value"]
@@ -199,9 +203,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                                 number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
                                             print(number, flush=True)
                                             break
-                                        except:
+                                        except Exception as e:
+                                            await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
                                             print("NO HERE.. 5", flush=True)
-                                            await asyncio.sleep(1)
+                                            await asyncio.sleep(5)
                                             try:
                                                 RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_3, proxies=prox).json()
                                                 number_0 = RRR["widget_list"][0]["data"]["value"]
@@ -212,7 +217,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                                     number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
                                                 print(number, flush=True)
                                                 break
-                                            except:
+                                            except Exception as e:
+                                                await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
                                                 print("we can not!! try again IP", flush=True)
                                                 await asyncio.sleep(3)
                                                 number = "do not find"
