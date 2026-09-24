@@ -70,6 +70,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     u=0
     t=1
     m=1
+    zx=1
     story = [] 
     title_list = []
     with open("title_text.txt", "w", encoding="utf-8") as file:
@@ -114,20 +115,21 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     except:
                         time = "در تیتر آگهی نوشته نشده"
                     # اطلاعات تماس
-                    #try:
-                    #    HH = {
-                    #        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
-                    #        "Accept": "application/json",
-                    #        "Cookie": "did=669b6986-df43-43a3-8b27-5373c7b3ec87; cdid=16ea83bc-d011-4033-846d-b1b312417809; _gcl_au=1.1.1851772210.1789818076; theme=light; _ga=GA1.1.936183600.1789818077; city=tehran; referrer=; _vid_t=Wg17lsxe/spNfkU5V7YSZN9ryxO/C2ZGKsmN8zuyGQLPThMndOSBB4ruwmBA6FaBUJhb9C83EHp9WA==; csid=f9052dd026834078e2; multi-city=tehran%7C; sAccessToken=eyJraWQiOiJkLTE3ODk4Mjg0NzAxNDQiLCJ0eXAiOiJKV1QiLCJ2ZXJzaW9uIjoiNCIsImFsZyI6IlJTMjU2In0.eyJpYXQiOjE3OTAxODc5NTMsImV4cCI6MTc5MDE5ODcxNCwic3ViIjoiOWFmMDI0ODItMDNmYy00NjAxLWJlMTMtM2Y0YmZhOGRiN2U1IiwidElkIjoicHVibGljIiwic2Vzc2lvbkhhbmRsZSI6IjA2YWY0NTEzLTZiOTctNGFjZS05MTRlLTEyZDk5M2U2NjA4MyIsInJlZnJlc2hUb2tlbkhhc2gxIjoiZjVhNWRlMzc3MWExYThiMDkzNjk2M2QxZGYyYzYxYTk5ZTZiNTVkY2IxYjkwM2I5ZGNkMWQ1ZWYzMzgyODhmYSIsInBhcmVudFJlZnJlc2hUb2tlbkhhc2gxIjoiY2E0MmE0OTkwYzE4OWI0NmEwMTRhYzNlYzhlZTdjNjZhZTNiYzZkZjBjOTM1NWVhNTkzZjE1ZTk5NGFkZjUzMyIsImFudGlDc3JmVG9rZW4iOm51bGwsImlzcyI6Imh0dHBzOi8vYXBpLmRpdmFyLmlyL3Y4L2F1dGhlbnRpY2F0ZSIsInBob25lTnVtYmVyIjoiKzk4OTM2MTYzNDU3MSIsInN0LXBlcm0iOnsidCI6MTc5MDE4Nzk1MywidiI6W119LCJzdC1yb2xlIjp7InQiOjE3OTAxODc5NTMsInYiOltdfX0.czYu-IMEqAJEhaEBFD65ZJjpoKQCDglqTzwkxdxlFdyfrej8c2KEAv7uRwBGx-tWel5kns8AAEDPeJMlmYZokwi2Rp581cl-LyJMtm745Yf3GM6-SByU6lp8IdDoAYS9w06QIytXnQ-LqaHz_-IV7ekxznDEOU7C4zNtps_uxVEsIQgrJuc4kk0f_38cPh25jNFxYRyy8mHNNVM9BWCtQydA8VUFgokRnNKOI1SMHpFAW7gcO1tMpdvEYsLEKauHly4wt23QydHzcw4vX0yNiyv0N0IVj9Ww55wP7L5JF6G1HfeFaBLFbY-umhKhK97ZpoosfKE8iMwtO01WS761WQ; sFrontToken=eyJ1aWQiOiI5YWYwMjQ4Mi0wM2ZjLTQ2MDEtYmUxMy0zZjRiZmE4ZGI3ZTUiLCJhdGUiOjE3OTAxOTg3MTQwMDAsInVwIjp7ImFudGlDc3JmVG9rZW4iOm51bGwsImV4cCI6MTc5MDE5ODcxNCwiaWF0IjoxNzkwMTg3OTUzLCJpc3MiOiJodHRwczovL2FwaS5kaXZhci5pci92OC9hdXRoZW50aWNhdGUiLCJwYXJlbnRSZWZyZXNoVG9rZW5IYXNoMSI6ImNhNDJhNDk5MGMxODliNDZhMDE0YWMzZWM4ZWU3YzY2YWUzYmM2ZGYwYzkzNTVlYTU5M2YxNWU5OTRhZGY1MzMiLCJwaG9uZU51bWJlciI6Iis5ODkzNjE2MzQ1NzEiLCJyZWZyZXNoVG9rZW5IYXNoMSI6ImY1YTVkZTM3NzFhMWE4YjA5MzY5NjNkMWRmMmM2MWE5OWU2YjU1ZGNiMWI5MDNiOWRjZDFkNWVmMzM4Mjg4ZmEiLCJzZXNzaW9uSGFuZGxlIjoiMDZhZjQ1MTMtNmI5Ny00YWNlLTkxNGUtMTJkOTkzZTY2MDgzIiwic3QtcGVybSI6eyJ0IjoxNzkwMTg3OTUzLCJ2IjpbXX0sInN0LXJvbGUiOnsidCI6MTc5MDE4Nzk1MywidiI6W119LCJzdWIiOiI5YWYwMjQ4Mi0wM2ZjLTQ2MDEtYmUxMy0zZjRiZmE4ZGI3ZTUiLCJ0SWQiOiJwdWJsaWMifX0=; ff=%7B%22f%22%3A%7B%22device_fp_enable%22%3Atrue%2C%22enable-places-selector-online-search-web%22%3Atrue%2C%22chat_message_disabled%22%3Atrue%2C%22web_sentry_sample_rate%22%3A0.2%2C%22web_sentry_traces_sample_rate%22%3A0.01%2C%22is_web_proactive_refresh_enabled%22%3Atrue%2C%22post-stats-batch-event-web-max-batch-size%22%3A%2220%22%2C%22post-stats-batch-event-web-flush-interval-sec%22%3A%2220%22%2C%22divar_default_call_center%22%3A%22neda%22%2C%22is_circle_location_enabled%22%3Atrue%2C%22web_client_exporter_page_load_sample_rate%22%3A0.5%7D%2C%22e%22%3A1790199554155%2C%22r%22%3A1790282354155%7D; resolution_width=843; _ga_1G1K17N77F=GS2.1.s1790195948$o25$g1$t1790195973$j35$l0$h0"
-                    #    }
-                    #    RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH).json()
-                    #    title = str(RRR["widget_list"][0]["data"]["title"]) 
-                    #    number = str(RRR["widget_list"][0]["data"]["value"])
-                    #    phone = f"{title} : {number}"
-                    #    break
-                    #except:
-                    #    await asyncio.sleep(random.randint(1,5))
-                    #    phone = "اطلاعات تماس یافت نشد"
+                    try:
+                        HH = {
+                            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+                            "Accept": "application/json",
+                            "Cookie": "did=669b6986-df43-43a3-8b27-5373c7b3ec87; cdid=16ea83bc-d011-4033-846d-b1b312417809; _gcl_au=1.1.1851772210.1789818076; theme=light; _ga=GA1.1.936183600.1789818077; city=tehran; referrer=; _vid_t=Wg17lsxe/spNfkU5V7YSZN9ryxO/C2ZGKsmN8zuyGQLPThMndOSBB4ruwmBA6FaBUJhb9C83EHp9WA==; csid=f9052dd026834078e2; multi-city=tehran%7C; sAccessToken=eyJraWQiOiJkLTE3ODk4Mjg0NzAxNDQiLCJ0eXAiOiJKV1QiLCJ2ZXJzaW9uIjoiNCIsImFsZyI6IlJTMjU2In0.eyJpYXQiOjE3OTAxODc5NTMsImV4cCI6MTc5MDE5ODcxNCwic3ViIjoiOWFmMDI0ODItMDNmYy00NjAxLWJlMTMtM2Y0YmZhOGRiN2U1IiwidElkIjoicHVibGljIiwic2Vzc2lvbkhhbmRsZSI6IjA2YWY0NTEzLTZiOTctNGFjZS05MTRlLTEyZDk5M2U2NjA4MyIsInJlZnJlc2hUb2tlbkhhc2gxIjoiZjVhNWRlMzc3MWExYThiMDkzNjk2M2QxZGYyYzYxYTk5ZTZiNTVkY2IxYjkwM2I5ZGNkMWQ1ZWYzMzgyODhmYSIsInBhcmVudFJlZnJlc2hUb2tlbkhhc2gxIjoiY2E0MmE0OTkwYzE4OWI0NmEwMTRhYzNlYzhlZTdjNjZhZTNiYzZkZjBjOTM1NWVhNTkzZjE1ZTk5NGFkZjUzMyIsImFudGlDc3JmVG9rZW4iOm51bGwsImlzcyI6Imh0dHBzOi8vYXBpLmRpdmFyLmlyL3Y4L2F1dGhlbnRpY2F0ZSIsInBob25lTnVtYmVyIjoiKzk4OTM2MTYzNDU3MSIsInN0LXBlcm0iOnsidCI6MTc5MDE4Nzk1MywidiI6W119LCJzdC1yb2xlIjp7InQiOjE3OTAxODc5NTMsInYiOltdfX0.czYu-IMEqAJEhaEBFD65ZJjpoKQCDglqTzwkxdxlFdyfrej8c2KEAv7uRwBGx-tWel5kns8AAEDPeJMlmYZokwi2Rp581cl-LyJMtm745Yf3GM6-SByU6lp8IdDoAYS9w06QIytXnQ-LqaHz_-IV7ekxznDEOU7C4zNtps_uxVEsIQgrJuc4kk0f_38cPh25jNFxYRyy8mHNNVM9BWCtQydA8VUFgokRnNKOI1SMHpFAW7gcO1tMpdvEYsLEKauHly4wt23QydHzcw4vX0yNiyv0N0IVj9Ww55wP7L5JF6G1HfeFaBLFbY-umhKhK97ZpoosfKE8iMwtO01WS761WQ; sFrontToken=eyJ1aWQiOiI5YWYwMjQ4Mi0wM2ZjLTQ2MDEtYmUxMy0zZjRiZmE4ZGI3ZTUiLCJhdGUiOjE3OTAxOTg3MTQwMDAsInVwIjp7ImFudGlDc3JmVG9rZW4iOm51bGwsImV4cCI6MTc5MDE5ODcxNCwiaWF0IjoxNzkwMTg3OTUzLCJpc3MiOiJodHRwczovL2FwaS5kaXZhci5pci92OC9hdXRoZW50aWNhdGUiLCJwYXJlbnRSZWZyZXNoVG9rZW5IYXNoMSI6ImNhNDJhNDk5MGMxODliNDZhMDE0YWMzZWM4ZWU3YzY2YWUzYmM2ZGYwYzkzNTVlYTU5M2YxNWU5OTRhZGY1MzMiLCJwaG9uZU51bWJlciI6Iis5ODkzNjE2MzQ1NzEiLCJyZWZyZXNoVG9rZW5IYXNoMSI6ImY1YTVkZTM3NzFhMWE4YjA5MzY5NjNkMWRmMmM2MWE5OWU2YjU1ZGNiMWI5MDNiOWRjZDFkNWVmMzM4Mjg4ZmEiLCJzZXNzaW9uSGFuZGxlIjoiMDZhZjQ1MTMtNmI5Ny00YWNlLTkxNGUtMTJkOTkzZTY2MDgzIiwic3QtcGVybSI6eyJ0IjoxNzkwMTg3OTUzLCJ2IjpbXX0sInN0LXJvbGUiOnsidCI6MTc5MDE4Nzk1MywidiI6W119LCJzdWIiOiI5YWYwMjQ4Mi0wM2ZjLTQ2MDEtYmUxMy0zZjRiZmE4ZGI3ZTUiLCJ0SWQiOiJwdWJsaWMifX0=; ff=%7B%22f%22%3A%7B%22device_fp_enable%22%3Atrue%2C%22enable-places-selector-online-search-web%22%3Atrue%2C%22chat_message_disabled%22%3Atrue%2C%22web_sentry_sample_rate%22%3A0.2%2C%22web_sentry_traces_sample_rate%22%3A0.01%2C%22is_web_proactive_refresh_enabled%22%3Atrue%2C%22post-stats-batch-event-web-max-batch-size%22%3A%2220%22%2C%22post-stats-batch-event-web-flush-interval-sec%22%3A%2220%22%2C%22divar_default_call_center%22%3A%22neda%22%2C%22is_circle_location_enabled%22%3Atrue%2C%22web_client_exporter_page_load_sample_rate%22%3A0.5%7D%2C%22e%22%3A1790199554155%2C%22r%22%3A1790282354155%7D; resolution_width=843; _ga_1G1K17N77F=GS2.1.s1790195948$o25$g1$t1790195973$j35$l0$h0"
+                        }
+                        RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH).json()
+                        title = str(RRR["widget_list"][0]["data"]["title"]) 
+                        number = str(RRR["widget_list"][0]["data"]["value"])
+                        phone = f"{title} : {number}"
+                        chch = 1
+                        break
+                    except:
+                        await asyncio.sleep(random.randint(1,5))
+                        phone = "اطلاعات تماس یافت نشد"
                     #------------
                     try:
                         RR = requests.get(f"https://api.divar.ir/v8/posts-v2/web/{token}", headers=headers).json()
@@ -164,15 +166,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     T_text = Paragraph(get_display(arabic_reshaper.reshape(text)), fa_style)
                     story.append(T_text)
                     story.append(Spacer(1,20))
-                    #I_phone = Paragraph(get_display(arabic_reshaper.reshape(phone), fa_style))
-                    #story.append(I_phone)
-                    #story.append(Spacer(1,20))
+                    I_phone = Paragraph(get_display(arabic_reshaper.reshape(phone), fa_style))
+                    story.append(I_phone)
+                    story.append(Spacer(1,20))
                     link = Paragraph(get_display(arabic_reshaper.reshape(f"<a href='{advertisement_link}'><font color='blue'><u>برای مشاهده جزئیات کامل آگهی در سایت دیوار کلیک کنید</u></font></a>")), fa_style)
                     story.append(link)
                     story.append(Spacer(1,20))
                     story.append(PageBreak())
                 print(f"do that {z}", flush=True)
                 z+=1
+                if zx==2:
+                    u=1
+                    break
+                else:
+                    zx+=1
             print(f"{len(title_list)} --> OK {u}", flush=True)
             LPD = site_text["pagination"]["data"]["last_post_date"]
             P = site_text["pagination"]["data"]["page"]
@@ -201,54 +208,55 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await context.bot.send_message(chat_id=update.effective_chat.id, text="pdf یافت نشد !!!")
     # فیلتر کردن آگهی های موردنیاز توسط هوش مصنوعی
     elif data.startswith("M_"):
-        text_long = None
-        await context.bot.send_message(chat_id=update.effective_chat.id, text="در حال تلاش برای ارتباط گیری با مدل هوش مصنوعی...")
-        MM = "pdf_divar.pdf"
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="استفاده از مدل هوش مصنوعی در ربات تستی، بدلیل کمبود زمان ساخت نمونه تستی، امکان پذیر نیست!!!")
+        #text_long = None
+        #await context.bot.send_message(chat_id=update.effective_chat.id, text="در حال تلاش برای ارتباط گیری با مدل هوش مصنوعی...")
+        #MM = "pdf_divar.pdf"
         # خواندن پی دی اف
-        READ = PdfReader(MM)
-        text_long = ""
-        for page in READ.pages:
-            text = page.extract_text()
-            if text:
-                text_long+= f"{text} \n"
-        if text_long is not None:
-            explain_user = "سلام. من کارگاه قطعه بندی مرغ (ران رستورانی سایز،فیله مرغ،سینه بدون استخوان، بال بازو،) دارم. لطفا اگهی های مربوط به استخدام نیرو متخصص رستوران مثل سر اشپز کمک اشپز و .. پیدا کن"
-            sentence = f"لطفا با توجه به این متن : {explain_user}, تمام آگهی های مربوط به این توضیحات را از این متنی که فرستاده میشود پیدا کن. سپس فقط و فقط شماره آگهی آنها رو که در فایل وجود دارد، بصورت یک لیست بده. لطفا سعی کن شماره صفحه آگهی هایی رو پیدا کنی که مطابق با توضیحات یا شباهت زیادی با آن داشته باشند. بقیه آگهی ها رو درنظر نگیر.لطفا هیچ توضیح اضافه ای نده، فقط لیست شماره آگهی ها رو بفرست. متن آگهی ها به این شرح است : {text_long}"
-            k=1
-            while k==1:
-                try:
-                    key = os.getenv("key_gemini")
-                    gemini_ai = genai.Client(api_key=key)
-                    responce = gemini_ai.models.generate_content( 
-                        model = f"gemini-3.5-flash", 
-                        contents=[sentence]
-                    )
-                    await context.bot.send_message(chat_id=update.effective_chat.id, text=str(responce.text))
-                    k=2
-                    break
-                except Exception as e:
-                    await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
-                    await asyncio.sleep(30)
+        #READ = PdfReader(MM)
+        #text_long = ""
+        #for page in READ.pages:
+        #    text = page.extract_text()
+        #    if text:
+        #        text_long+= f"{text} \n"
+        #if text_long is not None:
+        #    explain_user = "سلام. من کارگاه قطعه بندی مرغ (ران رستورانی سایز،فیله مرغ،سینه بدون استخوان، بال بازو،) دارم. لطفا اگهی های مربوط به استخدام نیرو متخصص رستوران مثل سر اشپز کمک اشپز و .. پیدا کن"
+        #    sentence = f"لطفا با توجه به این متن : {explain_user}, تمام آگهی های مربوط به این توضیحات را از این متنی که فرستاده میشود پیدا کن. سپس فقط و فقط شماره آگهی آنها رو که در فایل وجود دارد، بصورت یک لیست بده. لطفا سعی کن شماره صفحه آگهی هایی رو پیدا کنی که مطابق با توضیحات یا شباهت زیادی با آن داشته باشند. بقیه آگهی ها رو درنظر نگیر.لطفا هیچ توضیح اضافه ای نده، فقط لیست شماره آگهی ها رو بفرست. متن آگهی ها به این شرح است : {text_long}"
+        #    k=1
+        #    while k==1:
+        #        try:
+        #            key = os.getenv("key_gemini")
+        #            gemini_ai = genai.Client(api_key=key)
+        #            responce = gemini_ai.models.generate_content( 
+        #                model = f"gemini-3.5-flash", 
+        #                contents=[sentence]
+        #            )
+        #            await context.bot.send_message(chat_id=update.effective_chat.id, text=str(responce.text))
+        #            k=2
+        #            break
+        #        except Exception as e:
+        #            await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
+        #            await asyncio.sleep(30)
             # ساخت پی دی اف جدید
             # پاسخ هوش مصنوعی یک لیستی از شماره ها خواهد بود که باید در هنگام ساخت پی دی اف جدید فقط این شماره ها آگهی ها باید وجود داشته باشند
-            new_list = [1,4,5,7,10] # برای تست این لیست فرضی رو بعنوان پاسخ هوش مصنوعی در نظر میگیریم. در واقع باید داشته باشیم new_list = responce.text
-            first_pdf = "pdf_divar.pdf" # پی دی اف اولیه
-            new_pdf = "new_pdf_divar.pdf" # پی دی اف جدید
-            reader =PdfReader(first_pdf) # خواندن پی دی اف اولیه
-            writer = PdfWriter() # آماده سازی پی دی اف جدید جهت ساختن
-            new_list_0 = [q-1 for q in new_list]
-            for index, page in enumerate(reader.pages):
-                if index in new_list_0:
-                    writer.add_page(page)
-            with open(new_pdf, "wb") as f:
-                writer.write(f)
-            with open(new_pdf, "rb") as ff:
-                if ff:
-                    await context.bot.send_document(chat_id=update.effective_chat.id, document=ff, caption="آگهی های فیلتر شده توسط هوش مصنوعی")
-                else:
-                    await context.bot.send_message(chat_id=update.effective_chat.id, text="pdf یافت نشد !!!!")
-        else:
-            await context.bot.send_message(chat_id=update.effective_chat.id, text="متن pdf خوانده نشد..")
+        #    new_list = [1,4,5,7,10] # برای تست این لیست فرضی رو بعنوان پاسخ هوش مصنوعی در نظر میگیریم. در واقع باید داشته باشیم new_list = responce.text
+        #    first_pdf = "pdf_divar.pdf" # پی دی اف اولیه
+        #    new_pdf = "new_pdf_divar.pdf" # پی دی اف جدید
+        #    reader =PdfReader(first_pdf) # خواندن پی دی اف اولیه
+        #    writer = PdfWriter() # آماده سازی پی دی اف جدید جهت ساختن
+        #    new_list_0 = [q-1 for q in new_list]
+        #    for index, page in enumerate(reader.pages):
+        #        if index in new_list_0:
+        #            writer.add_page(page)
+        #    with open(new_pdf, "wb") as f:
+        #        writer.write(f)
+        #    with open(new_pdf, "rb") as ff:
+        #        if ff:
+        #            await context.bot.send_document(chat_id=update.effective_chat.id, document=ff, caption="آگهی های فیلتر شده توسط هوش مصنوعی")
+        #        else:
+        #            await context.bot.send_message(chat_id=update.effective_chat.id, text="pdf یافت نشد !!!!")
+        #else:
+        #    await context.bot.send_message(chat_id=update.effective_chat.id, text="متن pdf خوانده نشد..")
 appp = Flask(__name__)
 @appp.route("/")
 def home():
@@ -261,6 +269,7 @@ if __name__ == '__main__':
     app = Application.builder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(click_data))
+    print("yes", flush=True)
     app.run_polling()
 # https://api.divar.ir/v8/postcontact/web/contact_info_v2/gauq5_if
 # https://api.divar.ir/v8/postcontact/web/contact_info_v2/gag-GubZ
