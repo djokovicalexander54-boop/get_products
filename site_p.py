@@ -125,7 +125,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         title = str(RRR["widget_list"][0]["data"]["title"]) 
                         number = str(RRR["widget_list"][0]["data"]["value"])
                         phone = f"{title} : {number}"
-                        print(phone)
+                        print(phone, flush=True)
                     except:
                         try:
                             prox = proxy_list[random.randint(0,15)]
@@ -134,7 +134,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                             title = str(RRR["widget_list"][0]["data"]["title"]) 
                             number = str(RRR["widget_list"][0]["data"]["value"])
                             phone = f"{title} : {number}"
-                            print(phone)
+                            print(phone, flush=True)
                             await asyncio.sleep(random.randint(1,5))
                         except:
                             phone = "اطلاعات تماس یافت نشد"
