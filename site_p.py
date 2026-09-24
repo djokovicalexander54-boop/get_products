@@ -126,22 +126,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         number = str(RRR["widget_list"][0]["data"]["value"])
                         phone = f"{title} : {number}"
                         print(phone, flush=True)
-                        await asyncio.sleep(1)
                     except:
                         await asyncio.sleep(3)
-                        while True:
-                            for item in proxy_list:
-                                print(item, flush=True)
-                                try:
-                                    RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH, proxies=item).json()
-                                    title = str(RRR["widget_list"][0]["data"]["title"]) 
-                                    number = str(RRR["widget_list"][0]["data"]["value"])
-                                    phone = f"{title} : {number}"
-                                    print(phone, flush=True)
-                                    await asyncio.sleep(3)
-                                    break
-                                except:
-                                    phone = "اطلاعات تماس یافت نشد"
+                        for item in proxy_list:
+                            print(item, flush=True)
+                            try:
+                                RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH, proxies=item).json()
+                                title = str(RRR["widget_list"][0]["data"]["title"]) 
+                                number = str(RRR["widget_list"][0]["data"]["value"])
+                                phone = f"{title} : {number}"
+                                print(phone, flush=True)
+                                break
+                            except:
+                                await asyncio.sleep(3)
+                                phone = "اطلاعات تماس یافت نشد"
                     #------------
                     try:
                         RR = requests.get(f"https://api.divar.ir/v8/posts-v2/web/{token}", headers=headers).json()
