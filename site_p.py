@@ -141,348 +141,348 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         time = "در تیتر آگهی نوشته نشده"
                     #-------------
                     # دریافت اطلاعات تماس
-                    try:
-                        k=1
-                        q=1
-                        HEAD = HH_list[0]
-                        while k==1:
-                            RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD)
-                            print(f"{RRR.status_code}-->{kk}", flush=True)
-                            kk+=1
-                            if RRR.status_code==200:
-                                code = RRR.json()
-                                try:
-                                    number_0 = code["widget_list"][0]["data"]["value"]
-                                except:
-                                    number_0 = 50
-                                if number_0!=50:
-                                    tran = str.maketrans(fa_numbers,en_numbers)
-                                    number = str(number_0).translate(tran)
-                                    LL =list(number)
-                                    if len(LL) == 11:
-                                        number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
-                                    print(number, flush=True)
-                                    k=2
-                                    await asyncio.sleep(random.randint(3,7))
-                                else:
-                                    if q==1:
-                                        if qq_0!=20:
-                                            HEAD = HH_list[1]
-                                            await asyncio.sleep(random.randint(3,7))
-                                            q+=1
-                                    elif q==2:
-                                        if qq_1!=20:
-                                            HEAD = HH_list[2]
-                                            await asyncio.sleep(random.randint(3,7))
-                                            q+=1
-                                    elif q==3:
-                                        for prox in proxy_list:
-                                            RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
-                                            print(f"{RRR.status_code}-->{kk} $$$ {prox}", flush=True)
-                                            kk+=1
-                                            if RRR.status_code==200:
-                                                code = RRR.json()
-                                                try:
-                                                    number_0 = code["widget_list"][0]["data"]["value"]
-                                                except:
-                                                    number_0 = 60
-                                                if number_0!=60:
-                                                    tran = str.maketrans(fa_numbers,en_numbers)
-                                                    number = str(number_0).translate(tran)
-                                                    LL =list(number)
-                                                    if len(LL) == 11:
-                                                        number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
-                                                    print(number, flush=True)
-                                                    k=2
-                                                    await asyncio.sleep(random.randint(3,7))
-                                                    break
-                                                else:
-                                                    if q==1:
-                                                        if qq_0!=20:
-                                                            HEAD = HH_list[1]
-                                                            await asyncio.sleep(random.randint(3,7))
-                                                            q+=1
-                                                    elif q==2:
-                                                        if qq_1!=20:
-                                                            HEAD = HH_list[2]
-                                                            await asyncio.sleep(random.randint(3,7))
-                                                            q+=1
-                                                    else:
-                                                        number = "can not be find"
-                                                        print(number, flush=True)
-                                            else:
-                                                if q==1:
-                                                    if qq_0!=20:
-                                                        HEAD = HH_list[1]
-                                                        await asyncio.sleep(random.randint(3,7))
-                                                        q+=1
-                                                elif q==2:
-                                                    if qq_1!=20:
-                                                        HEAD = HH_list[2]
-                                                        await asyncio.sleep(random.randint(3,7))
-                                                        q+=1
-                                                else:
-                                                    number = "can not be find"
-                                                    print(number, flush=True)
-                            else:
-                                if q==1:
-                                    if qq_0!=20:
-                                        HEAD = HH_list[1]
-                                        await asyncio.sleep(random.randint(3,7))
-                                        q+=1
-                                elif q==2:
-                                    if qq_1!=20:
-                                        HEAD = HH_list[2]
-                                        await asyncio.sleep(random.randint(3,7))
-                                        q+=1
-                                elif q==3:
-                                    for prox in proxy_list:
-                                        RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
-                                        print(f"{RRR.status_code}-->{kk} $$$ {prox}", flush=True)
-                                        kk+=1
-                                        if RRR.status_code==200:
-                                            code = RRR.json()
-                                            try:
-                                                number_0 = code["widget_list"][0]["data"]["value"]
-                                            except:
-                                                number_0 = 60
-                                            if number_0!=60:
-                                                tran = str.maketrans(fa_numbers,en_numbers)
-                                                number = str(number_0).translate(tran)
-                                                LL =list(number)
-                                                if len(LL) == 11:
-                                                    number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
-                                                print(number, flush=True)
-                                                k=2
-                                                await asyncio.sleep(random.randint(3,7))
-                                                break
-                                            else:
-                                                if q==1:
-                                                    if qq_0!=20:
-                                                        HEAD = HH_list[1]
-                                                        await asyncio.sleep(random.randint(3,7))
-                                                        q+=1
-                                                elif q==2:
-                                                    if qq_1!=20:
-                                                        HEAD = HH_list[2]
-                                                        await asyncio.sleep(random.randint(3,7))
-                                                        q+=1
-                                                else:
-                                                    number = "can not be find"
-                                                    print(number, flush=True)
-                                        else:
-                                            if q==1:
-                                                if qq_0!=20:
-                                                    HEAD = HH_list[1]
-                                                    await asyncio.sleep(random.randint(3,7))
-                                                    q+=1
-                                            elif q==2:
-                                                if qq_1!=20:
-                                                    HEAD = HH_list[2]
-                                                    await asyncio.sleep(random.randint(3,7))
-                                                    q+=1
-                                            else:
-                                                number = "can not be find"
-                                                print(number, flush=True)
-                    except Exception as e:
-                        print(e, flush=True)
-                        # شناسایی ربات شماره 911 855 2199
-                        try:
-                            k=1
-                            q=1
-                            HEAD = HH_list[1]
-                            while k==1:
-                                RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD)
-                                print(f"{RRR.status_code}-->{kk}", flush=True)
-                                kk+=1
-                                if RRR.status_code==200:
-                                    code = RRR.json()
-                                    try:
-                                        number_0 = code["widget_list"][0]["data"]["value"]
-                                    except:
-                                        number_0 = 70
-                                    if number_0!=70:
-                                        tran = str.maketrans(fa_numbers,en_numbers)
-                                        number = str(number_0).translate(tran)
-                                        LL =list(number)
-                                        if len(LL) == 11:
-                                            number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
-                                        print(number, flush=True)
-                                        k=2
-                                        await asyncio.sleep(random.randint(3,7))
-                                    else:
-                                        if q==1:
-                                            if qq_0!=20:
-                                                HEAD = HH_list[2]
-                                                await asyncio.sleep(random.randint(3,7))
-                                                q+=1
-                                        elif q==3:
-                                            for prox in proxy_list:
-                                                RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
-                                                print(f"{RRR.status_code}-->{kk} $$$ {prox}", flush=True)
-                                                kk+=1
-                                                if RRR.status_code==200:
-                                                    code = RRR.json()
-                                                    try:
-                                                        number_0 = code["widget_list"][0]["data"]["value"]
-                                                    except:
-                                                        number_0 = 80
-                                                    if number_0!=80:
-                                                        tran = str.maketrans(fa_numbers,en_numbers)
-                                                        number = str(number_0).translate(tran)
-                                                        LL =list(number)
-                                                        if len(LL) == 11:
-                                                            number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
-                                                        print(number, flush=True)
-                                                        k=2
-                                                        await asyncio.sleep(random.randint(3,7))
-                                                        break
-                                                    else:
-                                                        if q==1:
-                                                            if qq_0!=20:
-                                                                HEAD = HH_list[2]
-                                                                await asyncio.sleep(random.randint(3,7))
-                                                                q+=1
-                                                        else:
-                                                            number = "can not be find"
-                                                            print(number, flush=True)
-                                                else:
-                                                    if q==1:
-                                                        if qq_0!=20:
-                                                            HEAD = HH_list[2]
-                                                            await asyncio.sleep(random.randint(3,7))
-                                                            q+=1
-                                                    else:
-                                                        number = "can not be find"
-                                                        print(number, flush=True)
-                                else:
-                                    if q==1:
-                                        if qq_0!=20:
-                                            HEAD = HH_list[2]
-                                            await asyncio.sleep(random.randint(3,7))
-                                            q+=1
-                                    elif q==3:
-                                        for prox in proxy_list:
-                                            RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
-                                            print(f"{RRR.status_code}-->{kk} $$$ {prox}", flush=True)
-                                            kk+=1
-                                            if RRR.status_code==200:
-                                                code = RRR.json()
-                                                try:
-                                                    number_0 = code["widget_list"][0]["data"]["value"]
-                                                except:
-                                                    number_0 = 80
-                                                if number_0!=80:
-                                                    tran = str.maketrans(fa_numbers,en_numbers)
-                                                    number = str(number_0).translate(tran)
-                                                    LL =list(number)
-                                                    if len(LL) == 11:
-                                                        number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
-                                                    print(number, flush=True)
-                                                    k=2
-                                                    await asyncio.sleep(random.randint(3,7))
-                                                    break
-                                                else:
-                                                    if q==1:
-                                                        if qq_0!=20:
-                                                            HEAD = HH_list[2]
-                                                            await asyncio.sleep(random.randint(3,7))
-                                                            q+=1
-                                                    else:
-                                                        number = "can not be find"
-                                                        print(number, flush=True)
-                                            else:
-                                                if q==1:
-                                                    if qq_0!=20:
-                                                        HEAD = HH_list[2]
-                                                        await asyncio.sleep(random.randint(3,7))
-                                                        q+=1
-                                                else:
-                                                    number = "can not be find"
-                                                    print(number, flush=True)
-                        except Exception as e:
-                            # شناسایی ریات شماره 922 054 4571
-                            try:
-                                k=1
-                                q=1
-                                HEAD = HH_list[2]
-                                while k==1:
-                                    RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD)
-                                    print(f"{RRR.status_code}-->{kk}", flush=True)
-                                    kk+=1
-                                    if RRR.status_code==200:
-                                        code = RRR.json()
-                                        try:
-                                            number_0 = code["widget_list"][0]["data"]["value"]
-                                        except:
-                                            number_0 = 90
-                                        if number_0!=90:
-                                            tran = str.maketrans(fa_numbers,en_numbers)
-                                            number = str(number_0).translate(tran)
-                                            LL =list(number)
-                                            if len(LL) == 11:
-                                                number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
-                                            print(number, flush=True)
-                                            k=2
-                                            await asyncio.sleep(random.randint(3,7))
-                                        else:
-                                            for prox in proxy_list:
-                                                RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
-                                                print(f"{RRR.status_code}-->{kk} $$$ {prox}", flush=True)
-                                                kk+=1
-                                                if RRR.status_code==200:
-                                                    code = RRR.json()
-                                                    try:
-                                                        number_0 = code["widget_list"][0]["data"]["value"]
-                                                    except:
-                                                        number_0 = 100
-                                                    if number_0!=100:
-                                                        tran = str.maketrans(fa_numbers,en_numbers)
-                                                        number = str(number_0).translate(tran)
-                                                        LL =list(number)
-                                                        if len(LL) == 11:
-                                                            number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
-                                                        print(number, flush=True)
-                                                        k=2
-                                                        await asyncio.sleep(random.randint(3,7))
-                                                        break
-                                                    else:
-                                                        number = "can not be find"
-                                                        print(number, flush=True)
-                                                else:
-                                                    number = "can not be find"
-                                                    print(number, flush=True)
-                                    else:
-                                        for prox in proxy_list:
-                                            RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
-                                            print(f"{RRR.status_code}-->{kk} $$$ {prox}", flush=True)
-                                            kk+=1
-                                            if RRR.status_code==200:
-                                                code = RRR.json()
-                                                try:
-                                                    number_0 = code["widget_list"][0]["data"]["value"]
-                                                except:
-                                                    number_0 = 100
-                                                if number_0!=100:
-                                                    tran = str.maketrans(fa_numbers,en_numbers)
-                                                    number = str(number_0).translate(tran)
-                                                    LL =list(number)
-                                                    if len(LL) == 11:
-                                                        number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
-                                                    print(number, flush=True)
-                                                    k=2
-                                                    await asyncio.sleep(random.randint(3,7))
-                                                    break
-                                                else:
-                                                    number = "can not be find"
-                                                    print(number, flush=True)
-                                            else:
-                                                number = "can not be find"
-                                                print(number, flush=True)
-                            except Exception as e:
-                                # شناسایی ربات شماره 936 163 4571
-                                number = "can not be find"
-                                print(number, flush=True)
+                    #try:
+                    #    k=1
+                    #    q=1
+                    #    HEAD = HH_list[0]
+                    #    while k==1:
+                    #        RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD)
+                    #        print(f"{RRR.status_code}-->{kk}", flush=True)
+                    #        kk+=1
+                    #        if RRR.status_code==200:
+                    #            code = RRR.json()
+                    #            try:
+                    #                number_0 = code["widget_list"][0]["data"]["value"]
+                    #            except:
+                    #                number_0 = 50
+                    #            if number_0!=50:
+                    #                tran = str.maketrans(fa_numbers,en_numbers)
+                    #                number = str(number_0).translate(tran)
+                    #                LL =list(number)
+                    #                if len(LL) == 11:
+                    #                    number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                    #                print(number, flush=True)
+                    #                k=2
+                    #                await asyncio.sleep(random.randint(3,7))
+                    #            else:
+                    #                if q==1:
+                    #                    if qq_0!=20:
+                    #                        HEAD = HH_list[1]
+                    #                        await asyncio.sleep(random.randint(3,7))
+                    #                        q+=1
+                    #                elif q==2:
+                    #                    if qq_1!=20:
+                    #                        HEAD = HH_list[2]
+                    #                        await asyncio.sleep(random.randint(3,7))
+                    #                        q+=1
+                    #                elif q==3:
+                    #                    for prox in proxy_list:
+                    #                        RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
+                    #                        print(f"{RRR.status_code}-->{kk} $$$ {prox}", flush=True)
+                    #                        kk+=1
+                    #                        if RRR.status_code==200:
+                    #                            code = RRR.json()
+                    #                            try:
+                    #                                number_0 = code["widget_list"][0]["data"]["value"]
+                    #                            except:
+                    #                                number_0 = 60
+                    #                            if number_0!=60:
+                    #                                tran = str.maketrans(fa_numbers,en_numbers)
+                    #                                number = str(number_0).translate(tran)
+                    #                                LL =list(number)
+                    #                                if len(LL) == 11:
+                    #                                    number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                    #                                print(number, flush=True)
+                    #                                k=2
+                    #                                await asyncio.sleep(random.randint(3,7))
+                    #                                break
+                    #                            else:
+                    #                                if q==1:
+                    #                                    if qq_0!=20:
+                    #                                        HEAD = HH_list[1]
+                    #                                        await asyncio.sleep(random.randint(3,7))
+                    #                                        q+=1
+                    #                                elif q==2:
+                    #                                    if qq_1!=20:
+                    #                                        HEAD = HH_list[2]
+                    #                                        await asyncio.sleep(random.randint(3,7))
+                    #                                        q+=1
+                    #                                else:
+                    #                                    number = "can not be find"
+                    #                                    print(number, flush=True)
+                    #                        else:
+                    #                            if q==1:
+                    #                                if qq_0!=20:
+                    #                                    HEAD = HH_list[1]
+                    #                                    await asyncio.sleep(random.randint(3,7))
+                    #                                    q+=1
+                    #                            elif q==2:
+                    #                                if qq_1!=20:
+                    #                                    HEAD = HH_list[2]
+                    #                                    await asyncio.sleep(random.randint(3,7))
+                    #                                    q+=1
+                    #                            else:
+                    #                                number = "can not be find"
+                    #                                print(number, flush=True)
+                    #        else:
+                    #            if q==1:
+                    #                if qq_0!=20:
+                    #                    HEAD = HH_list[1]
+                    #                    await asyncio.sleep(random.randint(3,7))
+                    #                    q+=1
+                    #            elif q==2:
+                    #                if qq_1!=20:
+                    #                    HEAD = HH_list[2]
+                    #                    await asyncio.sleep(random.randint(3,7))
+                    #                    q+=1
+                    #            elif q==3:
+                    #                for prox in proxy_list:
+                    #                    RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
+                    #                    print(f"{RRR.status_code}-->{kk} $$$ {prox}", flush=True)
+                    #                    kk+=1
+                    #                    if RRR.status_code==200:
+                    #                        code = RRR.json()
+                    #                        try:
+                    #                            number_0 = code["widget_list"][0]["data"]["value"]
+                    #                        except:
+                    #                            number_0 = 60
+                    #                        if number_0!=60:
+                    #                            tran = str.maketrans(fa_numbers,en_numbers)
+                    #                            number = str(number_0).translate(tran)
+                    #                            LL =list(number)
+                    #                            if len(LL) == 11:
+                    #                                number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                    #                            print(number, flush=True)
+                    #                            k=2
+                    #                            await asyncio.sleep(random.randint(3,7))
+                    #                            break
+                    #                        else:
+                    #                            if q==1:
+                    #                                if qq_0!=20:
+                    #                                    HEAD = HH_list[1]
+                    #                                    await asyncio.sleep(random.randint(3,7))
+                    #                                    q+=1
+                    #                            elif q==2:
+                    #                                if qq_1!=20:
+                    #                                    HEAD = HH_list[2]
+                    #                                    await asyncio.sleep(random.randint(3,7))
+                    #                                    q+=1
+                    #                            else:
+                    #                                number = "can not be find"
+                    #                                print(number, flush=True)
+                    #                    else:
+                    #                        if q==1:
+                    #                            if qq_0!=20:
+                    #                                HEAD = HH_list[1]
+                    #                                await asyncio.sleep(random.randint(3,7))
+                    #                                q+=1
+                    #                        elif q==2:
+                    #                            if qq_1!=20:
+                    #                                HEAD = HH_list[2]
+                    #                                await asyncio.sleep(random.randint(3,7))
+                    #                                q+=1
+                    #                        else:
+                    #                            number = "can not be find"
+                    #                            print(number, flush=True)
+                    #except Exception as e:
+                    #    print(e, flush=True)
+                    #    # شناسایی ربات شماره 911 855 2199
+                    #    try:
+                    #        k=1
+                    #        q=1
+                    #        HEAD = HH_list[1]
+                    #        while k==1:
+                    #            RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD)
+                    #            print(f"{RRR.status_code}-->{kk}", flush=True)
+                    #            kk+=1
+                    #            if RRR.status_code==200:
+                    #                code = RRR.json()
+                    #                try:
+                    #                    number_0 = code["widget_list"][0]["data"]["value"]
+                    #                except:
+                    #                    number_0 = 70
+                    #                if number_0!=70:
+                    #                    tran = str.maketrans(fa_numbers,en_numbers)
+                    #                    number = str(number_0).translate(tran)
+                    #                    LL =list(number)
+                    #                    if len(LL) == 11:
+                    #                        number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                    #                    print(number, flush=True)
+                    #                    k=2
+                    #                    await asyncio.sleep(random.randint(3,7))
+                    #                else:
+                    #                    if q==1:
+                    #                        if qq_0!=20:
+                    #                            HEAD = HH_list[2]
+                    #                            await asyncio.sleep(random.randint(3,7))
+                    #                            q+=1
+                    #                    elif q==3:
+                    #                        for prox in proxy_list:
+                    #                            RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
+                    #                            print(f"{RRR.status_code}-->{kk} $$$ {prox}", flush=True)
+                    #                            kk+=1
+                    #                            if RRR.status_code==200:
+                    #                                code = RRR.json()
+                    #                                try:
+                    #                                    number_0 = code["widget_list"][0]["data"]["value"]
+                    #                                except:
+                    #                                    number_0 = 80
+                    #                                if number_0!=80:
+                    #                                    tran = str.maketrans(fa_numbers,en_numbers)
+                    #                                    number = str(number_0).translate(tran)
+                    #                                    LL =list(number)
+                    #                                    if len(LL) == 11:
+                    #                                        number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                    #                                    print(number, flush=True)
+                    #                                    k=2
+                    #                                    await asyncio.sleep(random.randint(3,7))
+                    #                                    break
+                    #                                else:
+                    #                                    if q==1:
+                    #                                        if qq_0!=20:
+                    #                                            HEAD = HH_list[2]
+                    #                                            await asyncio.sleep(random.randint(3,7))
+                    #                                            q+=1
+                    #                                    else:
+                    #                                        number = "can not be find"
+                    #                                        print(number, flush=True)
+                    #                            else:
+                    #                                if q==1:
+                    #                                    if qq_0!=20:
+                    #                                        HEAD = HH_list[2]
+                    #                                        await asyncio.sleep(random.randint(3,7))
+                    #                                        q+=1
+                    #                                else:
+                    #                                    number = "can not be find"
+                    #                                    print(number, flush=True)
+                    #            else:
+                    #                if q==1:
+                    #                    if qq_0!=20:
+                    #                        HEAD = HH_list[2]
+                    #                        await asyncio.sleep(random.randint(3,7))
+                    #                        q+=1
+                    #                elif q==3:
+                    #                    for prox in proxy_list:
+                    #                        RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
+                    #                        print(f"{RRR.status_code}-->{kk} $$$ {prox}", flush=True)
+                    #                        kk+=1
+                    #                        if RRR.status_code==200:
+                    #                            code = RRR.json()
+                    #                            try:
+                    #                                number_0 = code["widget_list"][0]["data"]["value"]
+                    #                            except:
+                    #                                number_0 = 80
+                    #                            if number_0!=80:
+                    #                                tran = str.maketrans(fa_numbers,en_numbers)
+                    #                                number = str(number_0).translate(tran)
+                    #                                LL =list(number)
+                    #                                if len(LL) == 11:
+                    #                                    number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                    #                                print(number, flush=True)
+                    #                                k=2
+                    #                                await asyncio.sleep(random.randint(3,7))
+                    #                                break
+                    #                            else:
+                    #                                if q==1:
+                    #                                    if qq_0!=20:
+                    #                                        HEAD = HH_list[2]
+                    #                                        await asyncio.sleep(random.randint(3,7))
+                    #                                        q+=1
+                    #                                else:
+                    #                                    number = "can not be find"
+                    #                                    print(number, flush=True)
+                    #                        else:
+                    #                            if q==1:
+                    #                                if qq_0!=20:
+                    #                                    HEAD = HH_list[2]
+                    #                                    await asyncio.sleep(random.randint(3,7))
+                    #                                    q+=1
+                    #                            else:
+                    #                                number = "can not be find"
+                    #                                print(number, flush=True)
+                    #    except Exception as e:
+                    #        # شناسایی ریات شماره 922 054 4571
+                    #        try:
+                    #            k=1
+                    #            q=1
+                    #            HEAD = HH_list[2]
+                    #            while k==1:
+                    #                RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD)
+                    #                print(f"{RRR.status_code}-->{kk}", flush=True)
+                    #                kk+=1
+                    #                if RRR.status_code==200:
+                    #                    code = RRR.json()
+                    #                    try:
+                    #                        number_0 = code["widget_list"][0]["data"]["value"]
+                    #                    except:
+                    #                        number_0 = 90
+                    #                    if number_0!=90:
+                    #                        tran = str.maketrans(fa_numbers,en_numbers)
+                    #                        number = str(number_0).translate(tran)
+                    #                        LL =list(number)
+                    #                        if len(LL) == 11:
+                    #                            number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                    #                        print(number, flush=True)
+                    #                        k=2
+                    #                        await asyncio.sleep(random.randint(3,7))
+                    #                    else:
+                    #                        for prox in proxy_list:
+                    #                            RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
+                    #                            print(f"{RRR.status_code}-->{kk} $$$ {prox}", flush=True)
+                    #                            kk+=1
+                    #                            if RRR.status_code==200:
+                    #                                code = RRR.json()
+                    #                                try:
+                    #                                    number_0 = code["widget_list"][0]["data"]["value"]
+                    #                                except:
+                    #                                    number_0 = 100
+                    #                                if number_0!=100:
+                    #                                    tran = str.maketrans(fa_numbers,en_numbers)
+                    #                                    number = str(number_0).translate(tran)
+                    #                                    LL =list(number)
+                    #                                    if len(LL) == 11:
+                    #                                        number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                    #                                    print(number, flush=True)
+                    #                                    k=2
+                    #                                    await asyncio.sleep(random.randint(3,7))
+                    #                                    break
+                    #                                else:
+                    #                                    number = "can not be find"
+                    #                                    print(number, flush=True)
+                    #                            else:
+                    #                                number = "can not be find"
+                    #                                print(number, flush=True)
+                    #                else:
+                    #                    for prox in proxy_list:
+                    #                        RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HEAD, proxies=prox)
+                    #                        print(f"{RRR.status_code}-->{kk} $$$ {prox}", flush=True)
+                    #                        kk+=1
+                    #                        if RRR.status_code==200:
+                    #                            code = RRR.json()
+                    #                            try:
+                    #                                number_0 = code["widget_list"][0]["data"]["value"]
+                    #                            except:
+                    #                                number_0 = 100
+                    #                            if number_0!=100:
+                    #                                tran = str.maketrans(fa_numbers,en_numbers)
+                    #                                number = str(number_0).translate(tran)
+                    #                                LL =list(number)
+                    #                                if len(LL) == 11:
+                    #                                    number = f"{LL[0]}{LL[1]}{LL[2]}{LL[3]}     {LL[4]}{LL[5]}{LL[6]}     {LL[7]}{LL[8]}{LL[9]}{LL[10]}"
+                    #                                print(number, flush=True)
+                    #                                k=2
+                    #                                await asyncio.sleep(random.randint(3,7))
+                    #                                break
+                    #                            else:
+                    #                                number = "can not be find"
+                    #                                print(number, flush=True)
+                    #                        else:
+                    #                            number = "can not be find"
+                    #                            print(number, flush=True)
+                    #        except Exception as e:
+                    #            # شناسایی ربات شماره 936 163 4571
+                    #            number = "can not be find"
+                    #            print(number, flush=True)
                     #-------------
                     try:
                         RR = requests.get(f"https://api.divar.ir/v8/posts-v2/web/{token}", headers=headers).json()
@@ -519,7 +519,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     T_text = Paragraph(get_display(arabic_reshaper.reshape(text)), fa_style)
                     story.append(T_text)
                     story.append(Spacer(1,20))
-                    I_phone = Paragraph(get_display(arabic_reshaper.reshape(f"phone number : {number}"), fa_style_0))
+                    I_phone = Paragraph(get_display(arabic_reshaper.reshape("این امکان موقتا غیرفعال است"), fa_style_0))
                     story.append(I_phone)
                     story.append(Spacer(1,20))
                     link = Paragraph(get_display(arabic_reshaper.reshape(f"<a href='{advertisement_link}'><font color='blue'><u>برای مشاهده جزئیات کامل آگهی در سایت دیوار کلیک کنید</u></font></a>")), fa_style)
@@ -537,9 +537,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     DD = "pdf_divar.pdf"
     await context.bot.send_message(chat_id=update.effective_chat.id, text="آگهی ها آماده هست")
     key_list.append([InlineKeyboardButton(text="ارسال PDF تمام آگهی ها", callback_data=f"K${DD}")])
+    key_list.append([InlineKeyboardButton(text="ارسال PDF آگهی ها همراه با شماره تلفن", callback_data=f"F_")])
     key_list.append([InlineKeyboardButton(text="استفاده از هوش مصنوعی جهت فیلتر کردن", callback_data=f"M_")])
     reply = InlineKeyboardMarkup(key_list)
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="برای مشاهده تمام آگهی های حوزه استخدام و کاریابی فروشگاه ها و رستوران ها، گزینه اول را کلیک کنید \n در غیر این صورت اگر میخواهید فقط آگهی هایی مربوط به استخدام نیرو متخصص رستوران را دریافت کنید، گزینه دوم را کلیک کنید تا هوش مصنوعی فقط آگهی های این حوزه را برای شما بفرستد", reply_markup=reply)
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="برای مشاهده تمام آگهی های حوزه استخدام و کاریابی فروشگاه ها و رستوران ها، گزینه اول را کلیک کنید \n در غیر این صورت اگر میخواهید آگهی های مربوط به استخدام نیرو متخصص رستوران همراه با اطلاعات تماس آنها را دریافت کنید، گزینه دوم را کلیک کنید \n گزینه سوم بدلیل زمانبر بودن اتصال موقتا بسته است", reply_markup=reply)
 #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mm = update.callback_query
@@ -552,6 +553,11 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await context.bot.send_document(chat_id=update.effective_chat.id, document=pdf_data, caption="تمام آگهی های حوزه استخدام و کاریابی فروشگاه ها و رستوران ها")
             else:
                 await context.bot.send_message(chat_id=update.effective_chat.id, text="pdf یافت نشد !!!")
+    elif data.startswith("F_"):
+        ZZ = "pdf_divar_00.pdf"
+        with open(ZZ, "rb") as ff:
+            if pdf_data:
+                await context.bot.send_document(chat_id=update.effective_chat.id, document=pdf_data, caption=" نمونه آگهی های حوزه استخدام و کاریابی فروشگاه ها و رستوران ها همراه با شماره تماس")
     # فیلتر کردن آگهی های موردنیاز توسط هوش مصنوعی
     elif data.startswith("M_"):
         await context.bot.send_message(chat_id=update.effective_chat.id, text="استفاده از مدل هوش مصنوعی در ربات تستی، بدلیل کمبود زمان ساخت نمونه تستی، امکان پذیر نیست!!!")
