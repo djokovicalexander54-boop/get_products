@@ -32,10 +32,10 @@ HH_1 = {
     "Cookie":"did=7e251f52-f2fd-4fc1-9658-f1dae48402be; cdid=f0a03429-a904-48d4-bbea-a19669cb057b; _gcl_au=1.1.2013526149.1789842491; _ga_1G1K17N77F=GS2.1.s1790238556$o3$g1$t1790238606$j10$l0$h0; _ga=GA1.1.598642937.1789842491; csid=04e608ceb22a28d342; resolution_width=1920; theme=light; ff=%7B%22f%22%3A%7B%22device_fp_enable%22%3Atrue%2C%22enable-places-selector-online-search-web%22%3Atrue%2C%22chat_message_disabled%22%3Atrue%2C%22web_sentry_sample_rate%22%3A0.2%2C%22web_sentry_traces_sample_rate%22%3A0.01%2C%22is_web_p…NoMSI6bnVsbCwicGhvbmVOdW1iZXIiOiIrOTg5MjIwNTQ0NTcxIiwicmVmcmVzaFRva2VuSGFzaDEiOiJhYWE1NTBiNGQ1YjMyZWYzZmY4OWU0NzYyOTYzMDY4Y2RkYzBlOWEwNDM0MDFjMzFhZjI2YmZlZDVmNGI2NjgwIiwic2Vzc2lvbkhhbmRsZSI6ImE2MDI4ZTcyLWU0ZGUtNDdhMC04MTA4LTA1NGU4MDAyOTg5NSIsInN0LXBlcm0iOnsidCI6MTc5MDIzODU4NTM3MiwidiI6W119LCJzdC1yb2xlIjp7InQiOjE3OTAyMzg1ODUzNzIsInYiOltdfSwic3ViIjoiYWYxYjcwZjYtMWFlMS00ZTQ3LWFlYWQtOTMxZmVkYzM5MjM0IiwidElkIjoicHVibGljIn19; _vid_t=CfPgOf5eTt8M82pAuVLPKHamoQJJCtU2D8aAgSjYIcRhbKhOoee0Hv+p3pFNhBwlt+912OZIQFjxGw=="
 }
 # headers for number : 0936 163 4571
-HH_3 = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+HH_2 = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36 Edg/153.0.0.0",
     "Accept": "application/json",
-    "Cookie":""
+    "Cookie":"did=f21ed8e5-2be7-45d0-9c60-9e01e5a4d94a; cdid=55b7b597-e939-43c2-8791-7c94c67374f1; ff=%7B%22f%22%3A%7B%22device_fp_enable%22%3Atrue%2C%22enable-places-selector-online-search-web%22%3Atrue%2C%22chat_message_disabled%22%3Atrue%2C%22web_sentry_sample_rate%22%3A0.2%2C%22web_sentry_traces_sample_rate%22%3A0.01%2C%22is_web_proactive_refresh_enabled%22%3Atrue%2C%22post-stats-batch-event-web-max-batch-size%22%3A%2220%22%2C%22post-stats-batch-event-web-flush-interval-sec%22%3A%2220%22%2C%22divar_default_call_center%22%3A%22neda%22%2C%22web_client_exporter_page_load_sample_rate%22%3A0.5%7D%2C%22e%22%3A1790257737748%2C%22r%22%3A1790340537748%7D; referrer=; theme=light; _gcl_au=1.1.342277005.1790254139; _ga=GA1.1.1892709986.1790254140; sAccessToken=eyJraWQiOiJkLTE3ODk4Mjg0NzAxNDQiLCJ0eXAiOiJKV1QiLCJ2ZXJzaW9uIjoiNCIsImFsZyI6IlJTMjU2In0.eyJpYXQiOjE3OTAyNTQxNjcsImV4cCI6MTc5MDI2NDY0MSwic3ViIjoiOWFmMDI0ODItMDNmYy00NjAxLWJlMTMtM2Y0YmZhOGRiN2U1IiwidElkIjoicHVibGljIiwic2Vzc2lvbkhhbmRsZSI6Ijg5NTVlYTA3LTA3YWItNDgxYS1hNDEzLTgzMWIzZTViY2Y5NyIsInJlZnJlc2hUb2tlbkhhc2gxIjoiYjM5MjE0ZDVhMjBlNDA1ODNkNjEzNzJhNjM3Mzc1NDE0OTdmOTNlOTczMDQ0OGUwZDlkMDQ5ZTYyMDM4YWE3ZCIsInBhcmVudFJlZnJlc2hUb2tlbkhhc2gxIjpudWxsLCJhbnRpQ3NyZlRva2VuIjpudWxsLCJpc3MiOiJodHRwczovL2FwaS5kaXZhci5pci92OC9hdXRoZW50aWNhdGUiLCJwaG9uZU51bWJlciI6Iis5ODkzNjE2MzQ1NzEiLCJzdC1wZXJtIjp7InQiOjE3OTAyNTQxNjc5NzIsInYiOltdfSwic3Qtcm9sZSI6eyJ0IjoxNzkwMjU0MTY3OTcxLCJ2IjpbXX19.egPpoBjxrAXYVUuLFT3fF8KCe_aiGBgcLwIaENdOZWWcE4jhaRkwWfeC7yebdVxRIrc4DCAE6-R0MvApH5P90jKeNse3X_m93IhYoz9T3dkMuZG-TNT9WeLrKMb0XFFvpJj7IDy5kdx_J8tdCY70Aq4p-UnRhd6wRTKd9r_oMEWUHVfs8GzJsFckwczJyBvn6upaiqsmqcwxWUcSbd-tGEJCOcz4HCqqQnXM47k21LiUqEsIseXrzcr-SCf7ZXVTXaMeDxenecFGZpt3TqzfQ7a-Tt_kAftj6WJrHYAxMRfAsHxPrMEck0ZtCZqDzcdAswwqweY8wiNb8llkrfIXkQ; sFrontToken=eyJ1aWQiOiI5YWYwMjQ4Mi0wM2ZjLTQ2MDEtYmUxMy0zZjRiZmE4ZGI3ZTUiLCJhdGUiOjE3OTAyNjQ2NDEwMDAsInVwIjp7ImFudGlDc3JmVG9rZW4iOm51bGwsImV4cCI6MTc5MDI2NDY0MSwiaWF0IjoxNzkwMjU0MTY3LCJpc3MiOiJodHRwczovL2FwaS5kaXZhci5pci92OC9hdXRoZW50aWNhdGUiLCJwYXJlbnRSZWZyZXNoVG9rZW5IYXNoMSI6bnVsbCwicGhvbmVOdW1iZXIiOiIrOTg5MzYxNjM0NTcxIiwicmVmcmVzaFRva2VuSGFzaDEiOiJiMzkyMTRkNWEyMGU0MDU4M2Q2MTM3MmE2MzczNzU0MTQ5N2Y5M2U5NzMwNDQ4ZTBkOWQwNDllNjIwMzhhYTdkIiwic2Vzc2lvbkhhbmRsZSI6Ijg5NTVlYTA3LTA3YWItNDgxYS1hNDEzLTgzMWIzZTViY2Y5NyIsInN0LXBlcm0iOnsidCI6MTc5MDI1NDE2Nzk3MiwidiI6W119LCJzdC1yb2xlIjp7InQiOjE3OTAyNTQxNjc5NzEsInYiOltdfSwic3ViIjoiOWFmMDI0ODItMDNmYy00NjAxLWJlMTMtM2Y0YmZhOGRiN2U1IiwidElkIjoicHVibGljIn19; _vid_t=KuHD6TMzskqJax+H+Fl/XPcsE/jAGfW4QDuNuL9AdNn9/1C10iHLP9fNIJw8ADrUGgCZelBlaNF2qg==; multi-city=tehran%7C; city=tehran; csid=a5d0fc0d25d3b3ddd9; resolution_width=934; _ga_1G1K17N77F=GS2.1.s1790254139$o1$g1$t1790254277$j60$l0$h0"
 }
 fa_numbers = "۰۱۲۳۴۵۶۷۸۹"
 en_numbers = "0123456789"
@@ -135,6 +135,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     except:
                         time = "در تیتر آگهی نوشته نشده"
                     # دریافت اطلاعات تماس
+                    # دریافت اطلاعات تماس
+                    # دریافت موفق آمیز اطلاعات 200
+                    # رسیدن به سقف مجاز روزانه 429
+                    # خطای داخلی دیوار 500
+                    # سرور تحت فشاره 502 یا 503
+                    # اطلاعات پاک شده 404
                     for prox in proxy_list:
                         try:
                             RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_0).json()
@@ -149,7 +155,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         except Exception as e:
                             await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
                             print("NO HERE.. 1", flush=True)
-                            await asyncio.sleep(5)
+                            await asyncio.sleep(random.randint(3,8))
                             try:
                                 RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_1).json() 
                                 number_0 = RRR["widget_list"][0]["data"]["value"]
@@ -163,9 +169,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                             except Exception as e:
                                 await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
                                 print("NO HERE.. 2", flush=True)
-                                await asyncio.sleep(5)
+                                await asyncio.sleep(random.randint(3,8))
                                 try:
-                                    RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_3).json()
+                                    RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_2).json()
                                     number_0 = RRR["widget_list"][0]["data"]["value"]
                                     tran = str.maketrans(fa_numbers,en_numbers)
                                     number = str(number_0).translate(tran)
@@ -178,7 +184,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                     await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
                                     #  استفاده از پروکسی های چرخشی
                                     print("NO HERE.. 3", flush=True)
-                                    await asyncio.sleep(5)
+                                    await asyncio.sleep(random.randint(3,8))
                                     try:
                                         RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_0, proxies=prox).json()
                                         number_0 = RRR["widget_list"][0]["data"]["value"]
@@ -192,7 +198,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                     except Exception as e:
                                         await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
                                         print("NO HERE.. 4", flush=True)
-                                        await asyncio.sleep(5)
+                                        await asyncio.sleep(random.randint(3,8))
                                         try:
                                             RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_1, proxies=prox).json() 
                                             number_0 = RRR["widget_list"][0]["data"]["value"]
@@ -206,9 +212,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                         except Exception as e:
                                             await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
                                             print("NO HERE.. 5", flush=True)
-                                            await asyncio.sleep(5)
+                                            await asyncio.sleep(random.randint(3,8))
                                             try:
-                                                RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_3, proxies=prox).json()
+                                                RRR = requests.post(f"https://api.divar.ir/v8/postcontact/web/contact_info_v2/{token}", headers=HH_2, proxies=prox).json()
                                                 number_0 = RRR["widget_list"][0]["data"]["value"]
                                                 tran = str.maketrans(fa_numbers,en_numbers)
                                                 number = str(number_0).translate(tran)
@@ -220,7 +226,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                             except Exception as e:
                                                 await context.bot.send_message(chat_id=update.effective_chat.id, text=str(e))
                                                 print("we can not!! try again IP", flush=True)
-                                                await asyncio.sleep(3)
+                                                await asyncio.sleep(random.randint(3,8))
                                                 number = "do not find"
                     #---------------------------------------------------------------
                     try:
@@ -265,7 +271,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     story.append(link)
                     story.append(Spacer(1,20))
                     story.append(PageBreak())
-                if zx==2:
+                if zx==20:
                     u=1
                     break
                 else:
