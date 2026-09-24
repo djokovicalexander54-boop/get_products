@@ -179,7 +179,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     story.append(link)
                     story.append(Spacer(1,20))
                     story.append(PageBreak())
-                z+=1
                 if zx==2:
                     u=1
                     break
