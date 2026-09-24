@@ -100,7 +100,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     qq_1=1
     qq_2=1
     with open("title_text.txt", "w", encoding="utf-8") as file:
-        while u<=1:
+        while u<=20:
             if t==1:
                 play = {"source_view":"CATEGORY","pagination_data":{
                 "@type":"type.googleapis.com/post_list.PaginationData","last_post_date":"2026-09-22T17:54:48.708176Z","page":1,"layer_page":1,
@@ -519,7 +519,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     T_text = Paragraph(get_display(arabic_reshaper.reshape(text)), fa_style)
                     story.append(T_text)
                     story.append(Spacer(1,20))
-                    I_phone = Paragraph(get_display(arabic_reshaper.reshape("این امکان موقتا غیرفعال است"), fa_style_0))
+                    I_phone = Paragraph(get_display(arabic_reshaper.reshape("number phone : موقتا غیر فعال"), fa_style_0))
                     story.append(I_phone)
                     story.append(Spacer(1,20))
                     link = Paragraph(get_display(arabic_reshaper.reshape(f"<a href='{advertisement_link}'><font color='blue'><u>برای مشاهده جزئیات کامل آگهی در سایت دیوار کلیک کنید</u></font></a>")), fa_style)
@@ -556,8 +556,8 @@ async def click_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data.startswith("F_"):
         ZZ = "pdf_divar_00.pdf"
         with open(ZZ, "rb") as ff:
-            if pdf_data:
-                await context.bot.send_document(chat_id=update.effective_chat.id, document=pdf_data, caption=" نمونه آگهی های حوزه استخدام و کاریابی فروشگاه ها و رستوران ها همراه با شماره تماس")
+            if ff:
+                await context.bot.send_document(chat_id=update.effective_chat.id, document=ff, caption=" نمونه آگهی های حوزه استخدام و کاریابی فروشگاه ها و رستوران ها همراه با شماره تماس")
     # فیلتر کردن آگهی های موردنیاز توسط هوش مصنوعی
     elif data.startswith("M_"):
         await context.bot.send_message(chat_id=update.effective_chat.id, text="استفاده از مدل هوش مصنوعی در ربات تستی، بدلیل کمبود زمان ساخت نمونه تستی، امکان پذیر نیست!!!")
